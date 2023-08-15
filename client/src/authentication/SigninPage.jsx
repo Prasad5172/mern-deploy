@@ -297,8 +297,7 @@ const SinginPage = (props) => {
                         console.log(error)
                         statusOfLogin();
                       }}
-                    // useOneTap
-                    // className="button"
+                    
                     />
                   </div>
 

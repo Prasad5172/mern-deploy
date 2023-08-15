@@ -17,7 +17,13 @@ const Otp = require("./models/otpStruct")
 const otpGenerator = require("otp-generator")
 const path = require("path")
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:8000", // Replace with your app's domain
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
@@ -38,6 +44,7 @@ const oauth2Client = new OAuth2Client(
 
 
 async function verify(req, res, next) {
+    console.log("verify")
     console.log(process.env.REACT_APP_CLIENT_SECRETE_ID)
     console.log(process.env.REACT_APP_CLIENT_ID)
     const authHeader = req.headers.authorization;
@@ -64,6 +71,7 @@ async function verify(req, res, next) {
 }
 
 app.get("/protected", verify, (req, res, next) => {
+    console.log("protected")
     res.status(200).send("awesome it works for protected route");
 })
 
@@ -126,7 +134,7 @@ app.post("/checkEmail", async (req, res) => {
     }
 });
 app.post("/signin", async (req, res) => {
-    // console.log(req.body);
+    console.log(req.body);
     try {
         const email = req.body.email;
         const password = req.body.password;
