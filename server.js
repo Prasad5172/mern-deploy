@@ -285,7 +285,7 @@ app.post("/Signup", async (req, res) => {
                 confirmpassword: req.body.confirmpassword,
             })
             console.log("sending email")
-            const sendEmail = await fetch("/sendEmail", {
+            const sendEmail = await fetch("https://ill-shawl-lamb.cyclic.cloud/sendEmail", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
