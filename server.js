@@ -17,13 +17,9 @@ const Otp = require("./models/otpStruct")
 const otpGenerator = require("otp-generator")
 const path = require("path")
 
-const corsOptions = {
-  origin: "", // Replace with your app's domain
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
+
+app.use(cors());
 
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
