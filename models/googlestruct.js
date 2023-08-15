@@ -29,11 +29,6 @@ const googleClientScheme = new mongoose.Schema({
             type:String,
             required:true
         }
-    }],
-    library:[{
-        playlistId:{
-            type : String
-        }
     }]
 },{timestamps:true})
 

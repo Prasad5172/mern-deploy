@@ -32,18 +32,9 @@ const clientScheme = new mongoose.Schema({
             type:String,
             required:true
         }
-    }],
-    library:[
-        {
-        playlistId:{
-            type : String,
-        }
-    },
-    
-]
+    }]
 },{timestamps:true})
 
-clientScheme.index({ "library.playlistId": 1 }, { unique: true });
 
 clientScheme.pre("save",async function(next) {
     if(this.isModified("password")){
