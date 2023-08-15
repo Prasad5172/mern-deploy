@@ -18,7 +18,7 @@ const otpGenerator = require("otp-generator")
 const path = require("path")
 
 const corsOptions = {
-  origin: "http://localhost:8000", // Replace with your app's domain
+  origin: "", // Replace with your app's domain
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 };
