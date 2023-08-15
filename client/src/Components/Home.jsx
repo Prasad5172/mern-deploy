@@ -47,7 +47,7 @@ const Home = () => {
             // console.log(payload);
             if(payload){
                 // console.log(payload);
-                axios.get("http://localhost:8000/protected",{
+                axios.get("/protected",{
                     headers : {
                         Authorization : `Bearer ${credential}`
                     }
@@ -66,7 +66,7 @@ const Home = () => {
             if(cookie){
                 const tokenObject = { token: cookie };
                 try {
-                    const res = await fetch("http://localhost:8000/checkuser", {
+                    const res = await fetch("/checkuser", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

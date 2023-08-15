@@ -67,7 +67,7 @@ const SignupPage = () => {
     }, 300);
     event.preventDefault();
     try {
-      const res = await fetch("http://localhost:8000/signup", {
+      const res = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const SignupPage = () => {
           }
         });
         console.log(res.data);
-        const responce = await fetch("http://localhost:8000/googleSignup", {
+        const responce = await fetch("/googleSignup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -177,7 +177,7 @@ const SignupPage = () => {
       otp = otpData.join("")
     }
     console.log(otp)
-    const res = await fetch("http://localhost:8000/verifyOtp", {
+    const res = await fetch("/verifyOtp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -255,7 +255,7 @@ const SignupPage = () => {
   const handleResendOTP = async (event) => {
     event.preventDefault()
     try {
-      const res = await fetch("http://localhost:8000/signup", {
+      const res = await fetch("/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

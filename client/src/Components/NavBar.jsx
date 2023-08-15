@@ -71,7 +71,7 @@ const Navbar = (props) => {
         }else{
             const token = localStorage.getItem("token");
             try {
-                const res = await fetch("http://localhost:8000/logout", {
+                const res = await fetch("/logout", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",

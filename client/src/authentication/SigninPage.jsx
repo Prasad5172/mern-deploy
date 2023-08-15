@@ -73,7 +73,7 @@ const SinginPage = (props) => {
     }, 300);
     // console.log("hi")
     try {
-      const res = await fetch("http://localhost:8000/signin", {
+      const res = await fetch("/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -258,14 +258,14 @@ const SinginPage = (props) => {
                         // console.log(payload);
                         if (payload) {
                           console.log(payload);
-                          await axios.get("http://localhost:8000/protected", {
+                          await axios.get("/protected", {
                             headers: {
                               Authorization: `Bearer ${credential}`
                             }
                           }).then(
                             async response => {
                               // console.log(response)
-                              const res = await fetch("http://localhost:8000/googleSignin", {
+                              const res = await fetch("/googleSignin", {
                                 method: "POST",
                                 headers: {
                                   "Content-Type": "application/json",
