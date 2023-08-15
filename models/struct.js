@@ -37,7 +37,6 @@ const clientScheme = new mongoose.Schema({
         {
         playlistId:{
             type : String,
-            unique:true
         }
     },
     

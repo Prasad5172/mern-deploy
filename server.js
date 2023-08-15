@@ -173,7 +173,7 @@ app.post("/resetpassword",async (req,res) =>{
 })
 
 app.post("/verifyOtp", async (req, res) => {
-    
+    console.log("i am in verify otp in server file")
     try {
         const otpHolder = await Otp.find({
             email: req.body.email,
