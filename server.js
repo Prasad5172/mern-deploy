@@ -268,7 +268,7 @@ app.post("/sendEmail", async (req, res) => {
 
 })
 
-app.post("/signup", async (req, res) => {
+app.post("/Signup", async (req, res) => {
     const user = await Register.findOne({ "email": req.body.email });
     if (user != null) {
         console.log("notValidMail")

@@ -67,7 +67,7 @@ const SignupPage = () => {
     }, 300);
     event.preventDefault();
     try {
-      const res = await fetch("/signup", {
+      const res = await fetch("/Signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -255,7 +255,7 @@ const SignupPage = () => {
   const handleResendOTP = async (event) => {
     event.preventDefault()
     try {
-      const res = await fetch("/signup", {
+      const res = await fetch("/Signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
