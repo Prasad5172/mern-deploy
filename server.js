@@ -129,7 +129,7 @@ app.post("/checkEmail", async (req, res) => {
         return res.status(500).json(error);
     }
 });
-app.post("/signin", async (req, res) => {
+app.post("/Signin", async (req, res) => {
     console.log(req.body);
     try {
         const email = req.body.email;
