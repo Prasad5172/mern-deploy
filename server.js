@@ -284,7 +284,7 @@ app.post("/Signup", async (req, res) => {
                 password: req.body.password,
                 confirmpassword: req.body.confirmpassword,
             })
-
+            console.log("sending email")
             const sendEmail = await fetch("/sendEmail", {
                 method: "POST",
                 headers: {
