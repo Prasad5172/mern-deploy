@@ -6,7 +6,6 @@ const SearchDiv = () => {
     
     return (
         <>
-        <NavLink to="/playlist">
             <div className="search-page-container flex">
                 <div className="browse-all">
                     <p>Browse all</p>
@@ -15,7 +14,6 @@ const SearchDiv = () => {
                     <PodcastsCard/>
                 </div>
             </div>
-        </NavLink>
         </>
     )
 }

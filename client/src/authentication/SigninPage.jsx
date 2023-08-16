@@ -48,7 +48,7 @@ const SinginPage = (props) => {
       if (currentUrl == "/signin") {
         signin.style.setProperty("top", 0 + "%")
       } else {
-        signin.style.setProperty("top", 100 + "%")
+        signin.style.setProperty("top", 200 + "%")
         setSignInData({
           email: "",
           password: "",

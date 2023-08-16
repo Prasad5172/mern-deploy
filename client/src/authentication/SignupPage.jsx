@@ -26,7 +26,7 @@ const SignupPage = () => {
     if (currentUrl === "/signup") {
       signup.style.setProperty("top", 0 + "%")
     } else {
-      signup.style.setProperty("top", 100 + "%")
+      signup.style.setProperty("top", 200 + "%")
       setIsRegistrationSuccessful("");
       setformData({
         firstname: "",

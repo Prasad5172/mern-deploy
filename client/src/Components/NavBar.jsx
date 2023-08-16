@@ -213,8 +213,8 @@ const Navbar = (props) => {
                 {
                     props.isAuthenticated && (
                         <>
-                            <button className='secondary-button explore-premium'>Explore Premium</button>
-                            <button className='tertiary-button install-app'><i class="fa-regular fa-circle-down" style={{ color: "#ffffff" }}></i> Install App</button>
+                            {/* <button className='secondary-button explore-premium'>Explore Premium</button> */}
+                            {/* <button className='tertiary-button install-app'><i class="fa-regular fa-circle-down" style={{ color: "#ffffff" }}></i> Install App</button> */}
                             {
                                 displayProfile ? (
                                     <Tooltip title={userName} placement="top">

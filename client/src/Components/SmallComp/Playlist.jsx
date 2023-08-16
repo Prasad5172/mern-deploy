@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import logo from "../../../src/logo.png"
 import { useParams } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faL, faStopwatch } from '@fortawesome/free-solid-svg-icons'
 import "../home.css"
 import SongInfo from './SongInfo'
 import Playlistapi from "../apis/playlistApi.json"

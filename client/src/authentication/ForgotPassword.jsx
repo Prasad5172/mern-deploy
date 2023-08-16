@@ -162,7 +162,7 @@ function ForgotPassword(props) {
             if (currentUrl == "/forgotpassword") {
                 signin.style.setProperty("top", 0 + "%")
             } else {
-                signin?.style.setProperty("top", 100 + "%")
+                signin?.style.setProperty("top", 200 + "%")
                 setShowPassword1(false)
                 setShowPassword2(false)
                 setformData({

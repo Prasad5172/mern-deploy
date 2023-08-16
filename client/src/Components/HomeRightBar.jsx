@@ -5,7 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import ShowallPage from './SmallComp/ShowallPage';
 import SearchDiv from './SmallComp/SearchDiv';
 import Playlist from './SmallComp/Playlist.jsx';
-
+import Geners from './SmallComp/Geners';
 
 
 const HomeRightBar = (props) => { 
@@ -17,8 +17,8 @@ const HomeRightBar = (props) => {
                     <Route exact path="/" element={<HomeBeforeSignup {...props}/>}/>
                     <Route exact path='/section/:id' element={<ShowallPage {...props}/>}/>
                     <Route exact path='/search' element={<SearchDiv/>}/>
-                    {/* <Route exact path='/playlist' element={<Playlist {...props}/>}/> */}
                     <Route exact path='/playlist/:id' element={<Playlist {...props}/>}/>
+                    <Route exact path='/geners/:id' element={<Geners {...props}/>}/>
                 </Routes>
             </div>
         </>

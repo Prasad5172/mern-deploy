@@ -6,7 +6,7 @@ const Card = (props) => {
     return (
         <>
             <div className="card">
-                <NavLink to={`playlist/${props.playlistId}`}>
+                <NavLink to={`/playlist/${props.playlistId}`}>
                     <div className="image-container-card">
                         <div className="play-img-div" style={{ background: `url(${props.url}) no-repeat center / cover` }}>
 
