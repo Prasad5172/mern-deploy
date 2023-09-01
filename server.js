@@ -16,6 +16,8 @@ var nodemailer = require("nodemailer")
 const Otp = require("./models/otpStruct")
 const otpGenerator = require("otp-generator")
 const path = require("path")
+const BackendLocalHost_URL = "http://localhost:8000"
+const BackendHostingSite_URL = "https://ill-shawl-lamb.cyclic.cloud"
 
 
 
@@ -277,7 +279,6 @@ app.post("/Signup", async (req, res) => {
     try {
         const password = req.body.password;
         const cpassword = req.body.confirmpassword;
-        if (password == cpassword) {
             const registerEmployee = new Register({
                 firstname: req.body.firstname,
                 email: req.body.email,
@@ -285,13 +286,14 @@ app.post("/Signup", async (req, res) => {
                 confirmpassword: req.body.confirmpassword,
             })
             console.log("sending email")
-            const sendEmail = await fetch("https://ill-shawl-lamb.cyclic.cloud/sendEmail", {
+            const sendEmail = await fetch(`${BackendLocalHost_URL}/sendEmail`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ "email": req.body.email }),
             })
+            console.log(  await sendEmail.json())
             if (sendEmail.ok) {
                 
                 console.log("email send succesful" )
@@ -300,10 +302,7 @@ app.post("/Signup", async (req, res) => {
                 console.log("email not send")
                 return res.status(400).json("failedotp");
             }
-        } else {
-            console.log("password does not match")
-            return res.status(400).json("password");
-        }
+       
     } catch (error) {
         console.log(error + "   signup");
         res.status(400).json("error" + error)

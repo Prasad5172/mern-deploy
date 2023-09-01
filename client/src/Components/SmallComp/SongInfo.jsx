@@ -5,7 +5,7 @@ const SongInfo = (props) => {
   const { isPlaying, songPlayingInd,referencePlaylistInd } = useContext(SigninContext);
   const handleClickInSongInfo = () => {
     // console.log("i am in handleClickInSongInfo")
-    props.handleClick(props.id,props.referenceInd)
+    props.handleClick(props.id,props.referenceInd,true)
   }
 
   return (
@@ -13,12 +13,12 @@ const SongInfo = (props) => {
       <div className="song-info" >
         {(songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? (
           isPlaying ? <>
-          <div class="bars-container ">
-            <div class="bar hover-remove"></div>
-            <div class="bar hover-remove"></div>
-            <div class="bar hover-remove"></div>
-            <div class="bar hover-remove"></div>
-            {(isPlaying ? <i class="hover-change fa-sharp fa-solid fa-pause" style={{ color: "#ffffff" }}  onClick={() => props.handlePause()}></i> : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }}  onClick={() => props.handlePause()}></i>)}
+          <div className="bars-container ">
+            <div className="bar hover-remove"></div>
+            <div className="bar hover-remove"></div>
+            <div className="bar hover-remove"></div>
+            <div className="bar hover-remove"></div>
+            {(isPlaying ? <i className="hover-change fa-sharp fa-solid fa-pause" style={{ color: "#ffffff" }}  onClick={() => props.handlePause()}></i> : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }}  onClick={() => props.handlePause()}></i>)}
           </div>
           </> : <><div className="num-status">
             <span className={`num-and-dot ${songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? "green-color" : ""}`}>{props.id + 1}</span>
@@ -26,7 +26,7 @@ const SongInfo = (props) => {
               <i className="song-status fa-solid fa-circle fa-2xs" style={{ color: '#00a6ff', transform: 'scale(0.80)' }}></i>
             </span>
             {
-              (songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? (isPlaying ? <i class="hover-change fa-sharp fa-solid fa-pause" style={{ color: "#ffffff" }}  onClick={() => props.handlePause()}></i> : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }} onClick={() => props.handlePause()}></i>) : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }} onClick={() => props.handlePause()}></i>) 
+              (songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? (isPlaying ? <i className="hover-change fa-sharp fa-solid fa-pause" style={{ color: "#ffffff" }}  onClick={() => props.handlePause()}></i> : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }} onClick={() => props.handlePause()}></i>) : <i className="hover-change fa-sharp fa-solid fa-play" style={{ color: '#ffffff' }} onClick={() => props.handlePause()}></i>) 
             }
           </div></>
          

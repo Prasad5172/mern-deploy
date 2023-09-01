@@ -9,23 +9,24 @@ import { all } from 'axios';
 
 
 
-const Navbar = (props) => {
+const Navbar = () => {
+    const BackendUrl = "http://localhost:8000"
     // using context
-    const { userName,setUserName,displayProfile,setDisplayProfile,profile,setProfile,setIsLoginSuccesful,soundRef,setAudioPos,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,setSongPlayingInd} = useContext(SigninContext);
+    const { userName,setUserName,displayProfile,setDisplayProfile,profile,setIsLoginSuccesful,soundRef,setAudioPos,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,setSongPlayingInd,isSearchVisible,setSerchVisible,isAuthenticated,setAuthenticated} = useContext(SigninContext);
     const [num, setNum] = useState(-1)
     const [button, setButton] = useState(true);
     const [click, setClick] = useState(false);
     const [isAccountDetailsVisible, setAccountDeteilsVisible] = useState(false)
     useEffect(() => {
-        if (props.search) {
+        if (isSearchVisible) {
             const inputField = document.getElementById('middle');
             inputField.focus();
         }
-    }, [props.search])
+    }, [isSearchVisible])
 
     const handelClick = () => {
         navigate(-1)  //by using this i am able to go back to previous page
-        props.setState(false)
+        setSerchVisible(false)
     }
     const navigate = useNavigate()
 
@@ -63,15 +64,14 @@ const Navbar = (props) => {
         }
         if(localStorage.getItem("profile")){
             googleLogout();
-            // localStorage.removeItem("profile")
             localStorage.clear()
-            props.setAuthenticated(false)
+            setAuthenticated(false)
             setAccountDeteilsVisible(false)
             setDisplayProfile(false)
         }else{
             const token = localStorage.getItem("token");
             try {
-                const res = await fetch("/logout", {
+                const res = await fetch(`${BackendUrl}/logout`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const Navbar = (props) => {
                     localStorage.removeItem("token")
                     localStorage.removeItem("name")
                     localStorage.removeItem("email")
-                    props.setAuthenticated(false)
+                    setAuthenticated(false)
                     setAccountDeteilsVisible(false)
                     setDisplayProfile(false)
                     navigate("/")
@@ -107,7 +107,7 @@ const Navbar = (props) => {
 
     return (
         <>
-            <div className={`nav-bar  flex ${props.isAuthenticated ? "background-transparent" : ""}`} id='nav-bar' >
+            <div className={`nav-bar  flex ${isAuthenticated ? "background-transparent" : ""}`} id='nav-bar' >
                 <div className="arrow-main-container flex">
                     <div className="arrow-container">
                         <FontAwesomeIcon className="left-icon-in-nav icon-in-nav" id='left-icon' icon={faChevronRight} onClick={handelClick} />
@@ -120,7 +120,7 @@ const Navbar = (props) => {
                 </div>
                 <div className="input-flex-grow">
                     {
-                        props.search && (
+                        isSearchVisible && (
                             <NavLink to="/search">
                                 <div className="input-field " id='input-in-nav'>
                                     <FontAwesomeIcon className='search-icon' icon={faMagnifyingGlass} style={{ color: "#a7a7a7", }} />
@@ -131,7 +131,7 @@ const Navbar = (props) => {
                     }
                 </div>
                 {
-                    !props.isAuthenticated && (
+                    !isAuthenticated && (
                         <>
 
                             {
@@ -147,15 +147,15 @@ const Navbar = (props) => {
                                         <div className="drop-down-menu-nav-before-signup " id='drop-down-menu-nav-before-signup'>
                                             <div className="drop-down flex">
                                                 <div>Premium</div>
-                                                <a href="https://www.spotify.com/premium/" target='_blank' ><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                                <a href="https://www.spotify.com/premium/" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                             </div>
                                             <div className="drop-down flex">
                                                 <div>Support</div>
-                                                <a href="https://support.spotify.com/" target='_blank'><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                                <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                             </div>
                                             <div className="drop-down flex">
                                                 <div>Download</div>
-                                                <a href="https://spotify.com/download" target='_blank'><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                                <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                             </div>
                                         </div>
                                     </>
@@ -166,19 +166,19 @@ const Navbar = (props) => {
                                 <NavLink to="/signup"><p className='sign-up-nav'>Sign up</p></NavLink>
                                 <NavLink to="/signin"><button className='primary-button'>Log in</button></NavLink>
                             </div>
-                            {!button && (click ? <i class="fa-solid fa-bars" onClick={handelClickBars}></i> : <i class="fa-solid fa-xmark" onClick={handelClickBars}></i>)}
+                            {!button && (click ? <i className="fa-solid fa-bars" onClick={handelClickBars}></i> : <i className="fa-solid fa-xmark" onClick={handelClickBars}></i>)}
                         </>
                     )
                 }
 
 
                 {
-                    isAccountDetailsVisible && props.isAuthenticated && (
+                    isAccountDetailsVisible && isAuthenticated && (
                         <>
                             <div className="drop-down-menu-nav-before-signup " id='drop-down-menu-nav-account'>
                                 <div className="drop-down flex">
                                     <div>Account</div>
-                                    <a href="#" target='_blank' ><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                    <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                 </div>
                                 <div className="drop-down flex">
                                     <div>Profile</div>
@@ -186,15 +186,15 @@ const Navbar = (props) => {
                                 </div>
                                 <div className="drop-down flex">
                                     <div>Upgrade to Premium</div>
-                                    <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                    <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                 </div>
                                 <div className="drop-down flex">
                                     <div>Support</div>
-                                    <a href="https://support.spotify.com/" target='_blank'><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                    <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                 </div>
                                 <div className="drop-down flex">
                                     <div>Download</div>
-                                    <a href="https://spotify.com/download" target='_blank'><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                                    <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                 </div>
                                 <div className="drop-down flex">
                                     <div>Settings</div>
@@ -211,17 +211,17 @@ const Navbar = (props) => {
                     )
                 }
                 {
-                    props.isAuthenticated && (
+                    isAuthenticated && (
                         <>
                             {/* <button className='secondary-button explore-premium'>Explore Premium</button> */}
-                            {/* <button className='tertiary-button install-app'><i class="fa-regular fa-circle-down" style={{ color: "#ffffff" }}></i> Install App</button> */}
+                            {/* <button className='tertiary-button install-app'><i className="fa-regular fa-circle-down" style={{ color: "#ffffff" }}></i> Install App</button> */}
                             {
                                 displayProfile ? (
                                     <Tooltip title={userName} placement="top">
                                         < img src={`${profile}`} alt="Profile" onClick={handelClickAccount} className="google-profile-image"/> 
                                     </Tooltip>
 
-                                ) : <i class="fa-solid fa-user" style={{ color: "#ffffff" }} onClick={handelClickAccount}></i>
+                                ) : <i className="fa-solid fa-user" style={{ color: "#ffffff" }} onClick={handelClickAccount}></i>
                                     }
 
 

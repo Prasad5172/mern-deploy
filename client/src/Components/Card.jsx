@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { SigninContext } from '../context/SigninContext'
 const Card = (props) => {
-    const { isPlaying, referencePlaylistInd,soundRef } = useContext(SigninContext)
+    const { isPlaying, referencePlaylistInd,soundRef ,isSearchVisible,setSerchVisible,handleClick,isAuthenticated,setAuthenticated,handlePause} = useContext(SigninContext)
     return (
         <>
             <div className="card">
@@ -19,9 +19,9 @@ const Card = (props) => {
                 </NavLink>
                 <div className={`play-symbol play-symbol-in-playlist ${isPlaying && props.identity == referencePlaylistInd ? "opacity_1" : ""}`} onClick={() => {
                     if(props.identity == referencePlaylistInd && soundRef.current != null){
-                        props.handlePause()
+                        handlePause()
                     }else {
-                        props.handleClick(0,props.identity);
+                        handleClick(0,props.identity,false);
                     }
                 }}>
                     <i className={`fa-sharp fa-solid ${isPlaying && props.identity == referencePlaylistInd ? "fa-pause" : "fa-play"} play-icon-in-playlist`} style={{ color: "#121212" }} />

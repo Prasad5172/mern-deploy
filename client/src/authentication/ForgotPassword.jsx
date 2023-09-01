@@ -4,6 +4,7 @@ import { SigninContext } from '../context/SigninContext'
 import blackLogo from "../black-logo.jpg"
 import "./SigninAndSignup.css"
 function ForgotPassword(props) {
+    const BackendUrl = "http://localhost:8000"
     const navigate = useNavigate()
     const location = useLocation()
     const { userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful } = useContext(SigninContext)
@@ -39,7 +40,7 @@ function ForgotPassword(props) {
         }, 300);
         event.preventDefault();
         try {
-            const checkuser = await fetch("/checkEmail", {
+            const checkuser = await fetch(`${BackendUrl}/checkEmail`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +50,7 @@ function ForgotPassword(props) {
             // console.log(checkuser)
             if (checkuser.ok) {
                 try {
-                    const res = await fetch("/sendEmail", {
+                    const res = await fetch(`${BackendUrl}/sendEmail`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -123,7 +124,7 @@ function ForgotPassword(props) {
       otp = otpData.join("")
     }
         // console.log(otp)
-        const res = await fetch("/verifyOtp", {
+        const res = await fetch(`${BackendUrl}/verifyOtp`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -215,7 +216,7 @@ function ForgotPassword(props) {
     const handleResendOTP = async (event) => {
         event.preventDefault()
         try {
-            const res = await fetch("/sendEmail", {
+            const res = await fetch(`${BackendUrl}/sendEmail`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -257,7 +258,7 @@ function ForgotPassword(props) {
         event.preventDefault()
         // console.log("i am in handle reset password function")
         try {
-            const res = await fetch("/resetpassword", {
+            const res = await fetch(`${BackendUrl}/resetpassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -333,13 +334,14 @@ function ForgotPassword(props) {
         {
             !isAuthenticated && (
                 <>
-                    <div class="outer-box" id="forgotpage-signin">
-                        <div class="toast toast2" style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}` }}>
-                            <div class="toast-content">
-                                <i class={`fa-solid ${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "fa-check" : "fa-xmark"} check`} style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}`, color: "white" }}></i>
-                                <div class="message">
-                                    <span class="text text-1">{(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? (isResetSuccesful == "verifiedotp" ? "OTP Verified Succesfull" : ((isResetSuccesful == "succesful") ? "Registred succesfull" : "Succesful")) : "Sign Failed"}</span>
-                                    <span class="text text-2">
+                    <div className="outer-box" id="forgotpage-signin">
+                    
+                        <div className="toast toast2" style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}` }}>
+                            <div className="toast-content">
+                                <i className={`fa-solid ${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "fa-check" : "fa-xmark"} check`} style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}`, color: "white" }}></i>
+                                <div className="message">
+                                    <span className="text text-1">{(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? (isResetSuccesful == "verifiedotp" ? "OTP Verified Succesfull" : ((isResetSuccesful == "succesful") ? "Registred succesfull" : "Succesful")) : "Sign Failed"}</span>
+                                    <span className="text text-2">
                                         {isResetSuccesful == "failed" ? "Invalid credentials" : ""}
                                         {isResetSuccesful == "signup" ? "Email is not Registred" : ""}
                                         {isResetSuccesful == "succesful" ? "Your password has been successfully reset!" : ""}
@@ -352,12 +354,12 @@ function ForgotPassword(props) {
                                     </span>
                                 </div>
                             </div>
-                            <i class="fa-solid fa-xmark close close2"></i>
-                            <div class="progress progress2"></div>
+                            <i className="fa-solid fa-xmark close close2"></i>
+                            <div className="progress progress2"></div>
                         </div>
 
                         <div className="spotify-nav-login flex">
-                            <i class="fa-solid fa-arrow-left back-arrow-in-login"
+                            <i className="fa-solid fa-arrow-left back-arrow-in-login"
                                 style={{ color: " #ffffff" }}
                                 onClick={() => {
                                     if (showOtpPage) {
@@ -375,24 +377,24 @@ function ForgotPassword(props) {
                             <img src={`${blackLogo}`} alt="Logo" className="black-logo" />
                             <h1 className="spotify-name-in-loginpage">Spotify</h1>
                         </div>
-                        <div class="inner-box">
+                        <div className="inner-box">
                             {
                                 showOtpPage ?
                                     (
                                         isOtpVerified ?
                                             <>
-                                                <header class="signup-header">
+                                                <header className="signup-header">
                                                     <h1>Reset Password</h1>
                                                 </header>
-                                                <main class="signup-body">
-                                                    <form onSubmit={handleResetPassword} class="form">
+                                                <main className="signup-body">
+                                                    <form onSubmit={handleResetPassword} className="form">
 
                                                         <p>
-                                                            <label for="fname" class="field">New Password</label>
+                                                            <label for="fname" className="field">New Password</label>
                                                             <div>
                                                                 <input
                                                                     type={`${showPassword1 ? "text" : "password"}`}
-                                                                    class="fname"
+                                                                    className="fname"
                                                                     name="password"
                                                                     value={formdata.password}
                                                                     onChange={InputEvent}
@@ -402,17 +404,17 @@ function ForgotPassword(props) {
                                                                     onPaste={handlePaste}
                                                                 />
                                                                 {
-                                                                    showPassword1 ? <i class="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword1(!showPassword1)}></i> : <i class="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword1(!showPassword1)}></i>
+                                                                    showPassword1 ? <i className="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword1(!showPassword1)}></i> : <i className="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword1(!showPassword1)}></i>
                                                                 }
                                                             </div>
                                                         </p>
                                                         <p>
-                                                            <label for="fname" class="field">Check Password</label>
+                                                            <label for="fname" className="field">Check Password</label>
                                                             <div>
 
                                                                 <input
                                                                     type={`${showPassword2 ? "text" : "password"}`}
-                                                                    class="fname"
+                                                                    className="fname"
                                                                     name="confirmpassword"
                                                                     value={formdata.confirmpassword}
                                                                     onChange={InputEvent}
@@ -420,11 +422,11 @@ function ForgotPassword(props) {
                                                                     onPaste={handlePaste}
                                                                 />
                                                                 {
-                                                                    showPassword2 ? <i class="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword2(!showPassword2)}></i> : <i class="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword2(!showPassword2)}></i>
+                                                                    showPassword2 ? <i className="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword2(!showPassword2)}></i> : <i className="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword2(!showPassword2)}></i>
                                                                 }
                                                             </div>
                                                             {formdata.password !== formdata.confirmpassword && (
-                                                                <span class="password-mismatch">*Passwords do not match</span>
+                                                                <span className="password-mismatch">*Passwords do not match</span>
                                                             )}
                                                         </p>
                                                         <p className="centering">
@@ -437,12 +439,12 @@ function ForgotPassword(props) {
                                             </>
                                             :
                                             <>
-                                                <div class="container">
-                                                    <div class="row justify-content-md-center">
-                                                        <div class="col-md-4 text-center">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 mt-5 bgWhite">
-                                                                    <div class="title centering">
+                                                <div className="container">
+                                                    <div className="row justify-content-md-center">
+                                                        <div className="col-md-4 text-center">
+                                                            <div className="row">
+                                                                <div className="col-sm-12 mt-5 bgWhite">
+                                                                    <div className="title centering">
                                                                         Verify OTP
                                                                     </div>
                                                                     <h4 style={{ color: "#ffff", paddingBottom: "20px" }} className="centering">Enter the OTP send to {formdata.email} </h4>
@@ -462,9 +464,9 @@ function ForgotPassword(props) {
                                                                             />
                                                                         ))}
                                                                     </form>
-                                                                    <hr class="horizontalLine line-in-verifyOtp" />
-                                                                    <button type="submit" id="verify-otp-btn" class='create-account' onClick={handleVerifyOtp}>Verify</button>
-                                                                    <footer class="signup-footer footer-in-singup">
+                                                                    <hr className="horizontalLine line-in-verifyOtp" />
+                                                                    <button type="submit" id="verify-otp-btn" className='create-account' onClick={handleVerifyOtp}>Verify</button>
+                                                                    <footer className="signup-footer footer-in-singup">
                                                                         <p>Already Registered? <NavLink to="/signin" className="marginDown">Click here to login</NavLink></p>
                                                                         <p>Didn't receive OTP? <a href="#" onClick={handleResendOTP} className="marginDown">Resend OTP</a></p>
                                                                     </footer>
@@ -478,15 +480,15 @@ function ForgotPassword(props) {
                                     )
                                     :
                                     <>
-                                        <div class="row">
+                                        <div className="row">
                                             <h1 style={{ marginBottom: "10px" }}>Forgot Password</h1>
-                                            <h6 class="information-text">Enter your registered email to reset your password.</h6>
-                                            <div class="form-group">
-                                                <form class="form" onSubmit={handleSubmit}>
-                                                    <label for="fname" class="field">Enter Your Email</label>
+                                            <h6 className="information-text">Enter your registered email to reset your password.</h6>
+                                            <div className="form-group">
+                                                <form className="form" onSubmit={handleSubmit}>
+                                                    <label for="fname" className="field">Enter Your Email</label>
                                                     <input
                                                         type="email"
-                                                        class="fname"
+                                                        className="fname"
                                                         name="email"
                                                         value={formdata.email}
                                                         onChange={InputEvent}
@@ -497,7 +499,7 @@ function ForgotPassword(props) {
                                                     </p>
                                                 </form>
                                             </div>
-                                            <div class="footer">
+                                            <div className="footer">
                                                 <p>New here? <NavLink to="/signup">Sign Up.</NavLink></p>
                                                 <p>Already have an account? <NavLink to="/signin">Sign In.</NavLink></p>
                                             </div>

@@ -1,7 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { NavLink, Navigate, useLocation, useNavigate } from "react-router-dom"
-import { useCookies } from "react-cookie";
-import Home from "../Components/Home"
 import "./SigninAndSignup.css"
 import { SigninContext } from '../context/SigninContext'
 import { GoogleLogin } from "@react-oauth/google";
@@ -9,9 +7,10 @@ import axios from "axios"
 import { decodeJwt } from "jose"
 import blackLogo from "../black-logo.jpg"
 import "./Toast.css"
-import { faL } from "@fortawesome/free-solid-svg-icons";
+
 const SinginPage = (props) => {
-  const { userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful } = useContext(SigninContext)
+  const BackendUrl = "http://localhost:8000"
+  const {  setUserName,  setDisplayProfile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful } = useContext(SigninContext)
   useEffect(() => {
     if (isPasswordResetSuccesful == "resetpassword") {
       setIsLoginSuccesful(isPasswordResetSuccesful);
@@ -38,25 +37,7 @@ const SinginPage = (props) => {
   }
 
 
-  // showing signin and signup pages
-  const location = useLocation();
 
-  useEffect(() => {
-    const currentUrl = location.pathname;
-    if (!props.isAuthenticated) {
-      const signin = document.getElementById("signin-page")
-      if (currentUrl == "/signin") {
-        signin.style.setProperty("top", 0 + "%")
-      } else {
-        signin.style.setProperty("top", 200 + "%")
-        setSignInData({
-          email: "",
-          password: "",
-        });
-        setShowPassword(false)
-      }
-    }
-  }, [location])
 
   const storeInLocalStorage = (user) => {
     window.localStorage.setItem("token", user.token)
@@ -73,7 +54,7 @@ const SinginPage = (props) => {
     }, 300);
     // console.log("hi")
     try {
-      const res = await fetch("/Signin", {
+      const res = await fetch(`${BackendUrl}/Signin`,{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,181 +122,179 @@ const SinginPage = (props) => {
     });
 
   }
- 
+
   const handlePaste = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
     const pastedText = event.clipboardData.getData('text/plain');
-  
+
     const input = event.target;
     const inputType = input.type; // Store the original input type
     input.type = 'text'; // Temporarily change input type to "text"
     console.log(name);
-    var newValue = value.substring(0, input.selectionStart) + pastedText 
-      if(name !== "email"){
-        newValue =newValue+ value.substring(input.selectionEnd);
-      }
+    var newValue = value.substring(0, input.selectionStart) + pastedText
+    if (name !== "email") {
+      newValue = newValue + value.substring(input.selectionEnd);
+    }
     setSignInData((prevData) => ({
       ...prevData,
       [name]: newValue,
     }));
-  
+
     // Change input type back to the original type
     input.type = inputType;
-  
+
     // // Trigger the onChange event to update the state
     const changeEvent = new Event('input', { bubbles: true });
     input.dispatchEvent(changeEvent);
   };
-  
+
 
 
 
 
   return (
     <>
-      <SigninContext.Provider value={{ setIsLoginSuccesful }}>
-        {
-          !isAuthenticated && (
-            <>
-              <div class="outer-box" id="signin-page">
-                <div class="toast" style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}` }}>
-                  <div class="toast-content">
-                    <i class={`fa-solid ${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "fa-check" : "fa-xmark"} check`} style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}`, color: "white" }}></i>
-                    <div class="message">
-                      <span class="text text-1">{IsLoginSuccesful == "resetpassword" ? "Succesful" : "Login failed"}</span>
-                      <span class="text text-2"> {IsLoginSuccesful == "failed" ? "Invalid credentials" : ""}
-                        {IsLoginSuccesful == "signup" ? "Email is not Registred" : ""}
-                        {IsLoginSuccesful == "succesful" ? "Login Succesful" : ""}
-                        {IsLoginSuccesful == "resetpassword" ? "Password Reset Succesful" : ""}
+      {
+        !isAuthenticated && (
+          <>
+            <div className="outer-box" id="signin-page">
+              <div className="toast" style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}` }}>
+                <div className="toast-content">
+                  <i className={`fa-solid ${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "fa-check" : "fa-xmark"} check`} style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}`, color: "white" }}></i>
+                  <div className="message">
+                    <span className="text text-1">{IsLoginSuccesful == "resetpassword" ? "Succesful" : "Login failed"}</span>
+                    <span className="text text-2"> {IsLoginSuccesful == "failed" ? "Invalid credentials" : ""}
+                      {IsLoginSuccesful == "signup" ? "Email is not Registred" : ""}
+                      {IsLoginSuccesful == "succesful" ? "Login Succesful" : ""}
+                      {IsLoginSuccesful == "resetpassword" ? "Password Reset Succesful" : ""}
 
-                      </span>
-                    </div>
+                    </span>
                   </div>
-                  <i class="fa-solid fa-xmark close"></i>
-                  <div class="progress "></div>
                 </div>
+                <i className="fa-solid fa-xmark close"></i>
+                <div className="progress "></div>
+              </div>
 
-                <div className="spotify-nav-login flex">
-                  <i class="fa-solid fa-arrow-left back-arrow-in-login" style={{ color: " #ffffff" }} onClick={() => navigate(-1)}></i>
-                  <img src={`${blackLogo}`} alt="Logo" className="black-logo" />
-                  <h1 className="spotify-name-in-loginpage">Spotify</h1>
-                </div>
-                <div class="inner-box">
-                  <header class="signup-header">
-                    <h1>Signin</h1>
-                    <p>It just take 30 seconds</p>
-                  </header>
-                  <main class="signup-body">
-                    <form onSubmit={handleSubmit} class="form">
-                      <p>
-                        <label for="fname" class="field">Enter Your Email</label>
+              <div className="spotify-nav-login flex">
+                <i className="fa-solid fa-arrow-left back-arrow-in-login" style={{ color: " #ffffff" }} onClick={() => navigate(-1)}></i>
+                <img src={`${blackLogo}`} alt="Logo" className="black-logo" />
+                <h1 className="spotify-name-in-loginpage">Spotify</h1>
+              </div>
+              <div className="inner-box">
+                <header className="signup-header">
+                  <h1>Signin</h1>
+                  <p>It just take 30 seconds</p>
+                </header>
+                <main className="signup-body">
+                  <form onSubmit={handleSubmit} className="form">
+                    <p>
+                      <label htmlFor="fname" className="field">Enter Your Email</label>
+                      <input
+                        type="email"
+                        className="fname"
+                        name="email"
+                        value={signInData.email}
+                        onChange={inputEvent}
+                        required
+                        onPaste={handlePaste} />
+                    </p>
+                    <p>
+                      <label htmlFor="fname" className="field"  >Password</label>
+                      <div>
                         <input
-                          type="email"
-                          class="fname"
-                          name="email"
-                          value={signInData.email}
+                          type={`${showPassword ? "text" : "password"}`}
+                          className="fname"
+                          name="password"
+                          value={signInData.password}
                           onChange={inputEvent}
                           required
                           onPaste={handlePaste} />
-                      </p>
-                      <p>
-                        <label for="fname" class="field"  >Password</label>
-                        <div>
-                          <input
-                            type={`${showPassword ? "text" : "password"}`}
-                            class="fname"
-                            name="password"
-                            value={signInData.password}
-                            onChange={inputEvent}
-                            required
-                            onPaste={handlePaste} />
-                          {
-                            showPassword ? <i class="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword(!showPassword)}></i> : <i class="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword(!showPassword)}></i>
-                          }
-
-                        </div>
-
-                      </p>
-                      <p className="forgotpassword">
-                        <NavLink to="/forgotpassword">Forgotpassword?</NavLink>
-                      </p>
-                      <p className="centering">
-
-                        <input type="submit" id="sign-in-btn" value="Sign in" className="create-account button" />
-                      </p>
-                    </form>
-                  </main>
-                  <div className="centering">
-
-                    <GoogleLogin
-                      clientId="393706794831-fggnef4oudj1qqnu3ncbkce42epk3b0n.apps.googleusercontent.com"
-                      onSuccess={async credentialResponse => {
-                        // console.log(credentialResponse)
-                        const { credential } = credentialResponse;
-
-                        var payload = credential ? decodeJwt(credential) : undefined
-                        // console.log(payload);
-                        if (payload) {
-                          console.log(payload);
-                          await axios.get("/protected", {
-                            headers: {
-                              Authorization: `Bearer ${credential}`
-                            }
-                          }).then(
-                            async response => {
-                              // console.log(response)
-                              const res = await fetch("/googleSignin", {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify(payload),
-                              });
-                              const data = await res.json()
-                              console.log(data)
-                              // console.log(res)
-                              if (res.ok) {
-                                navigate("/")
-                                props.setAuthenticated(true)
-                                setUserName(payload.given_name)
-                                setDisplayProfile(true);
-                                setAuthenticated(true);
-                                setProfile(payload.picture)
-                                window.localStorage.setItem("profile", credential);
-                              } else {
-                                setIsLoginSuccesful(data);
-                                signinBtnFailedAnimation();
-                                statusOfLogin();
-                              }
-                            }
-                          ).catch(error => console.log(error))
+                        {
+                          showPassword ? <i className="fa-solid fa-eye-slash show-and-hide" onClick={() => setShowPassword(!showPassword)}></i> : <i className="fa-solid fa-eye show-and-hide" onClick={() => setShowPassword(!showPassword)}></i>
                         }
+
+                      </div>
+
+                    </p>
+                    <p className="forgotpassword">
+                      <NavLink to="/forgotpassword">Forgotpassword?</NavLink>
+                    </p>
+                    <p className="centering">
+
+                      <input type="submit" id="sign-in-btn" value="Sign in" className="create-account button" />
+                    </p>
+                  </form>
+                </main>
+                <div className="centering">
+
+                  <GoogleLogin
+                    clientId="393706794831-fggnef4oudj1qqnu3ncbkce42epk3b0n.apps.googleusercontent.com"
+                    onSuccess={async credentialResponse => {
+                      // console.log(credentialResponse)
+                      const { credential } = credentialResponse;
+
+                      var payload = credential ? decodeJwt(credential) : undefined
+                      // console.log(payload);
+                      if (payload) {
+                        console.log(payload);
+                        await axios.get("/protected", {
+                          headers: {
+                            Authorization: `Bearer ${credential}`
+                          }
+                        }).then(
+                          async response => {
+                            // console.log(response)
+                            const res = await fetch(`${BackendUrl}/googleSignin`, {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify(payload),
+                            });
+                            const data = await res.json()
+                            console.log(data)
+                            // console.log(res)
+                            if (res.ok) {
+                              navigate("/")
+                              props.setAuthenticated(true)
+                              setUserName(payload.given_name)
+                              setDisplayProfile(true);
+                              setAuthenticated(true);
+                              setProfile(payload.picture)
+                              window.localStorage.setItem("profile", credential);
+                            } else {
+                              setIsLoginSuccesful(data);
+                              signinBtnFailedAnimation();
+                              statusOfLogin();
+                            }
+                          }
+                        ).catch(error => console.log(error))
                       }
-                      }
-                      onFailure={error => {
-                        console.log(error)
-                        statusOfLogin();
-                      }}
-                    
-                    />
-                  </div>
+                    }
+                    }
+                    onFailure={error => {
+                      console.log(error)
+                      statusOfLogin();
+                    }}
 
-                  <footer class="signup-footer">
-
-                    <p>Not Register ? <NavLink to="/signup">Click here to register</NavLink></p>
-
-                  </footer>
-
-
+                  />
                 </div>
+
+                <footer className="signup-footer">
+
+                  <p>Not Register ? <NavLink to="/signup">Click here to register</NavLink></p>
+
+                </footer>
 
 
               </div>
-            </>
-          )
-        }
-      </SigninContext.Provider>
+
+
+            </div>
+          </>
+        )
+      }
     </>
   )
 }

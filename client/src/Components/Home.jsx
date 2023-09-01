@@ -1,33 +1,27 @@
-import React, { useState, useRef, useEffect,useCallback } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import "./home.css"
 import HomeLeftBar from './HomeLeftBar'
-import HomeRightBar from './HomeRightBar'
 import { useLocation, useNavigate, NavLink } from 'react-router-dom'
 import Playlistapi from "./apis/playlistApi.json"
 import { Howl } from 'howler'
-import SignupPage from '../authentication/SignupPage'
-import SinginPage from '../authentication/SigninPage'
 import {SigninContext} from "../context/SigninContext"
 import { decodeJwt } from 'jose'
 import axios  from 'axios'
-import ForgotPassword from '../authentication/ForgotPassword'
+import { Outlet } from 'react-router-dom';
+import Loading from './SmallComp/Loading'
+
 const Home = () => {
+    const BackendUrl = "http://localhost:8000"
     // user details context 
-    const [userName,setUserName] = React.useState("")
-    const [displayProfile,setDisplayProfile] = React.useState(false);
-    const [profile,setProfile]=React.useState("")
-    const [isAuthenticated, setAuthenticated] = React.useState(false);
+   
+    const {isLoading, setIsLoading,profile,setProfile,displayProfile,setDisplayProfile,userName,setUserName,isAuthenticated,setAuthenticated,IsLoginSuccesful,setIsLoginSuccesful,isPasswordResetSuccesful,setIsPasswordResetSuccesful,isSearchVisible,setSerchVisible} = useContext(SigninContext)
 
 
-    const [isSearchVisible, setSerchVisible] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+
     const navigate = useNavigate()
     const location = useLocation()
 
-  const [IsLoginSuccesful, setIsLoginSuccesful] = React.useState("");
-
-  const [isPasswordResetSuccesful,setIsPasswordResetSuccesful] = useState("")
- 
+  
     useEffect(() => {
         if (window.location.hash === '#login' && !isAuthenticated) {
             const floationEle = document.getElementById('floating-element')
@@ -38,58 +32,10 @@ const Home = () => {
         }
     }, [location]);
 
-
-    useEffect( () => {
-        const credential = localStorage.getItem("profile");
-        // console.log(credential)
-        if(credential){
-            var payload =  credential ? decodeJwt(credential) : undefined
-            // console.log(payload);
-            if(payload){
-                // console.log(payload);
-                axios.get("/protected",{
-                    headers : {
-                        Authorization : `Bearer ${credential}`
-                    }
-                }).then( response => console.log(response.data)).catch(error => console.log(error))
-            }
-            setUserName(payload.family_name);
-            setDisplayProfile(true)
-            setProfile(payload.picture)
-            setAuthenticated(true)
-            navigate("/")
-            setIsLoading(false); 
-            return ;
-        }
-        const checkAuthentication = async () => {
-            const cookie = localStorage.getItem("token");
-            if(cookie){
-                const tokenObject = { token: cookie };
-                try {
-                    const res = await fetch("/checkuser", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(tokenObject),
-                    });
-                    const data = await res.json();
-                    console.log(data);
-                    if (data === "successful") {
-                        setAuthenticated(true);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-                setIsLoading(false); 
-            }
-        };
-        setIsLoading(false)
-
-        checkAuthentication();
-    }, []);
  
 
+
+    
 
 
     const handelCloseBtn = () => {
@@ -115,8 +61,9 @@ const Home = () => {
 
     const latestSongPlayingInd = useRef(songPlayingInd);
 
-    const handleClick =   (ind,referenceInd) => {
+    const handleClick =   (ind,referenceInd,isSong) => {
         // console.log("i am in handle click in home")
+        console.log(referenceInd)
         setReferencePlaylistInd(referenceInd)
         console.log(referenceInd)
         const length = Playlistapi[referenceInd].songs.length
@@ -163,9 +110,12 @@ const Home = () => {
                 volumeChange.style.setProperty('--slider-width', 100 + '%');
                 setSoundVolume(1)
             }
-        } else {
+        } else if(isSong) {
             window.location.href = '#login';
             setLoginSongImg(Playlistapi[referenceInd].songs[ind].url)
+        }else{
+            window.location.href = '#login';
+            setLoginSongImg(Playlistapi[referenceInd].url)
         }
     }
 
@@ -394,21 +344,13 @@ const Home = () => {
 
     return (
         <>
-        <SigninContext.Provider value={{userName,setUserName,displayProfile,setDisplayProfile,profile,setProfile,isAuthenticated, setAuthenticated,IsLoginSuccesful,setIsLoginSuccesful,soundRef,setAudioPos,isPlaying,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,songPlayingInd,setSongPlayingInd,referencePlaylistInd,soundRef,isPasswordResetSuccesful}} >
+        <SigninContext.Provider value={{userName,setUserName,displayProfile,setDisplayProfile,profile,setProfile,isAuthenticated, setAuthenticated,IsLoginSuccesful,setIsLoginSuccesful,soundRef,setAudioPos,isPlaying,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,songPlayingInd,setSongPlayingInd,referencePlaylistInd,soundRef,isPasswordResetSuccesful,setSerchVisible,handleClick,isSearchVisible,handlePause,setIsPasswordResetSuccesful}} >
 
-                {isLoading && 
-                    <div className="loading-container">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                }
+               
                 <div className="main-container">
                     <div className="left-and-right-body-section">
-                        <HomeLeftBar setState={setSerchVisible} isAuthenticated={isAuthenticated} />
-                        <HomeRightBar search={isSearchVisible} setState={setSerchVisible} handleClick={handleClick} isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} handlePause={handlePause} />
+                        <HomeLeftBar  />
+                        <Outlet/>
                     </div>
                     {
                         isAuthenticated ?
@@ -424,11 +366,11 @@ const Home = () => {
 
                                     <div className="song-forward-rewined-btn flex">
                                         <div className="paly-pause-footer flex">
-                                            <i class="forward-step-icon increse-size fa-solid fa-forward-step fa-rotate-180 rewined" onClick={rewined} style={{ color: '#ffffff' }}></i>
+                                            <i className="forward-step-icon increse-size fa-solid fa-forward-step fa-rotate-180 rewined" onClick={rewined} style={{ color: '#ffffff' }}></i>
                                             <div className="pause-play-div centering increse-size " id='pause-play-div'>
                                                 {isPlaying ? (<i className="fa-sharp fa-solid fa-pause" style={{ color: '#000000' }} onClick={handlePause}></i>) : (<i className="play-logo-in-footer fa-sharp fa-solid fa-play" style={{ color: '#000000' }} onClick={handlePause}></i>)}
                                             </div>
-                                            <i class="increse-size fa-solid fa-forward-step forward" onClick={forward} style={{ color: '#ffffff' }}></i>
+                                            <i className="increse-size fa-solid fa-forward-step forward" onClick={forward} style={{ color: '#ffffff' }}></i>
                                         </div>
                                         <div className="songPlayedDetails centering">
                                             <input
@@ -445,9 +387,9 @@ const Home = () => {
                                     </div>
                                     <div className="volume-setting">
                                         <div className="speaker-symbol">
-                                            {VolumeSpeaker == 'muted' ? <i class=" fa-solid fa-volume-xmark" style={{ color: '#ffffff' }}></i> : ""}
-                                            {VolumeSpeaker == 'lowVolume' ? <i class=" fa-solid fa-volume-low" style={{ color: '#ffffff' }}></i> : ""}
-                                            {VolumeSpeaker == 'highVolume' ? <i class="fa-solid fa-volume-high" style={{ color: '#ffffff' }}></i> : ""}
+                                            {VolumeSpeaker == 'muted' ? <i className=" fa-solid fa-volume-xmark" style={{ color: '#ffffff' }}></i> : ""}
+                                            {VolumeSpeaker == 'lowVolume' ? <i className=" fa-solid fa-volume-low" style={{ color: '#ffffff' }}></i> : ""}
+                                            {VolumeSpeaker == 'highVolume' ? <i className="fa-solid fa-volume-high" style={{ color: '#ffffff' }}></i> : ""}
                                         </div>
                                         <input
                                             type="range"
@@ -487,7 +429,7 @@ const Home = () => {
                 {
                     !isAuthenticated && (
                         <>
-                            <div class="floating-element centering " id='floating-element'>
+                            <div className="floating-element centering " id='floating-element'>
                                 <div className="main-floating-signup flex">
                                     <img className='image-in-floation-signup' src={`${loginSongImg}`} alt="img" />
                                     <div className="floating-content-signup flex">
@@ -505,9 +447,6 @@ const Home = () => {
                     )
                 }
 
-                <SinginPage setAuthenticated={setAuthenticated} isAuthenticated={isAuthenticated} />
-                <SignupPage />
-                <ForgotPassword setIsPasswordResetSuccesful={setIsPasswordResetSuccesful}/>
         </SigninContext.Provider>
 
         </>

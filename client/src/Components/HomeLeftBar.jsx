@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGlobe,faPlus,faMagnifyingGlass, faHouseChimney ,faCircle, faL} from '@fortawesome/free-solid-svg-icons'
 import collapse from "./collapse.svg"
 import { NavLink,useLocation } from 'react-router-dom'
+import { SigninContext } from '../context/SigninContext'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeFromLibrary } from '../redux/cartReducer'
 
-
-
-const HomeLeftBar = (props) => {
+const HomeLeftBar = () => {
+    const dispatch = useDispatch()
+    const list = useSelector(state => state.library.list)
+    console.log(list)
+    const {setSerchVisible,isAuthenticated}  = useContext(SigninContext);
     const location = useLocation();
     const [isSearchActive,setSearchActive]=useState(false);
 
@@ -18,19 +23,19 @@ const HomeLeftBar = (props) => {
             const home = document.getElementById("home-button")
             home.classList.add("active-in-home")
             setSearchActive(false)
-            props.setState(false)
+            setSerchVisible(false)
         }else if(currentUrl == "/search"){
             const home= document.getElementById("home-button")
             home.classList.remove("active-in-home")
             const search = document.getElementById("search-button")
             search.classList.add("active-in-home")
             setSearchActive(true)
-            props.setState(true)
+            setSerchVisible(true)
         }else{
             const search= document.getElementById("search-button")
             search.classList.remove("active-in-home")
             setSearchActive(false)
-            props.setState(false)
+            setSerchVisible(false)
 
         }
     },[location])
@@ -67,27 +72,33 @@ const HomeLeftBar = (props) => {
                                 <div className="lib-section flex">
                                     <div className='collapse-logo flex'>
                                         <img src={collapse} alt="" style={{"background-color":"#ffff"}} />
-                                        <a href="#" title='Collapse your library'><p className='your-lib'>Your Library</p></a>
+                                        <p className='your-lib'>Your Library</p>
                                     </div>
                                     {/* <div className="your-section">
                                         <a href="#" title='Crearete playlist or folder'><FontAwesomeIcon  className="faplus" icon={faPlus} style={{color: "#a7a7a7",}} /></a>
                                     </div>   */}
                                 </div>
                                 <div className="playlist-body">
-                                    <div className="create-playlist">
+                                    {/* <div className="create-playlist">
                                         <p className='p1'>Create your first playlist</p>
                                         <p className='p2'>it's easy, we'll help you</p>
                                         <button className='secondary-button'>Create playlist</button>
-                                    </div>
+                                    </div> */}
                                     {/* <div className="podcasts">
                                         <p className='p1'>Let's find some podcasts to follow</p>
                                         <p className='p2'>we'll keep ypu updated on new episodes</p>
                                         <button className='secondary-button'>Browse podcasts</button>
                                     </div> */}
+                                    <div className="library-item">
+                                        
+                                    </div>
+                                    {list.map((item,ind) => {
+                                        return <i class="fa-solid fa-trash" style={{"color": "#a7a7a7"}} onClick={() => dispatch(removeFromLibrary(item))} key={item.playlistId}></i>
+                                    })}
                                 </div>
                             </div>
                             {
-                                !props.isAuthenticated && (
+                                !isAuthenticated && (
                                     <div className='cookies-section'>
                                         <p><a href="#">Cookies</a></p>
                                         <button className='tertiary-button'> <FontAwesomeIcon icon={faGlobe} style={{color: "#a7a7a7"}}/> English</button>
