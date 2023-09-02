@@ -5,7 +5,7 @@
         "title": "Alone Again",
         "description": "Being alone(again) can be thought ,but these somthing xxxxx",
         "playlistId": "a",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00004851459d675aa0b6f3b211357370",
                 "audio": "/audio/LetMeDownSlowly.mp3",
@@ -145,7 +145,7 @@
         "title": "Peaceful Piano",
         "description": "Peaceful piano to help you slow down, breath...",
         "playlistId": "b",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -263,7 +263,7 @@
         "title": "Peaceful Piano",
         "description": "Peaceful piano to help you slow down, breath...",
         "playlistId": "c",
-        "songs": [
+        "type":"Playlist","songs": [  
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -380,7 +380,7 @@
         "title": "Daily Mix 5",
         "description": "Billile elish,Billile elish,Billile elish,Billile elish,Billile elish",
         "playlistId": "d",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -498,7 +498,7 @@
         "title": "Peaceful Piano",
         "description": "Peaceful piano to help you slow down, breath...",
         "playlistId": "e",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -616,7 +616,7 @@
         "title": "Anirudh Ravichandra",
         "description": "Peaceful piano to help you slow down, breath something text xxxxx",
         "playlistId": "f",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -734,7 +734,7 @@
         "title": "Peaceful Piano",
         "description": "Peaceful piano to help you slow down, breath...",
         "playlistId": "g",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -852,7 +852,7 @@
         "title": "English Rap songs",
         "description": "Peaceful piano to help you slow down, breath something text fadfkajf",
         "playlistId": "h",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",
@@ -970,7 +970,7 @@
         "title": "Happy Vibes",
         "description": "Peaceful piano to help you slow down, breath something text xxxxxx",
         "playlistId": "i",
-        "songs": [
+        "type":"Playlist","songs": [ 
             {
                 "url": "https://i.scdn.co/image/ab67616d00001e027d46ff19532fdba734bfd4e0",
                 "audio": "/audio/paatan.mp3",

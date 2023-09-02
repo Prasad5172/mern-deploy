@@ -162,7 +162,7 @@ p,span{
     display: grid;
     grid-template-columns: 385px minmax(400px ,auto);
     height: 90vh;
-    transition: grid-template-columns 0.3s ease;
+    transition: grid-template-columns 1s ease;
 }
 
 /* HomeLeftBar */
@@ -252,12 +252,12 @@ p,span{
     background-color: var(--primary-bg-color);
     margin: 10px ;
     padding: 15px;
+    padding-right: 0px;
     border-radius: 8px;
     height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-   
 }
 
 
@@ -308,12 +308,14 @@ p,span{
     color: white !important;
 }
 
-
+.library-main-section{
+    height: 100%;
+}
 
 .playlist-body{
-    overflow: auto;
-    height: 305px;
-
+    overflow: scroll;
+    height: 95%;
+    margin-top: 10px;
 }
 /* create playlist */
 .create-playlist{
@@ -359,7 +361,8 @@ p,span{
 
 /* scrool bar animation */
 ::-webkit-scrollbar {
-    width: 20px;
+    width: 15px;
+    height: 0px;
   }
 ::-webkit-scrollbar-track {
     background-color: transparent;
@@ -434,7 +437,7 @@ p,span{
     backdrop-filter: blur(0px);
     z-index: 1;
     gap: 5px;
-    transition: background-color 0.3s ease;
+    transition: all 1s ease;
  }
  .background-transparent{
     background-color: rgb(0, 0, 0,0);
@@ -1305,7 +1308,6 @@ p,span{
  .outer-box{
     position: absolute;
     z-index: 100;
-    top: 100%;
  }
  .singupPage-container{
     width: 100vw;
@@ -1318,13 +1320,43 @@ p,span{
     top: 0%;
 }
 
-
-  
-
+/* library playlist */
+.library-playlist{
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.library-playlist:hover{
+    background-color: #434343;
+}
+.library-image{
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin: 7px;
+}
+.library-playlist-details{
+    width: calc(100% - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 50px;
+    flex-shrink: 100;
+    margin-left: 5px;
+}
 @media (max-width: 1300px) {
     .main-container .left-and-right-body-section{
-        grid-template-columns: 350px minmax(400px ,auto) !important;
+        grid-template-columns: 300px minmax(400px ,auto) !important;
     }
+    .nav-bar{
+        left: 300px;
+    }
+
+}
+
+@media (max-width: 1300px) {
     .box-on-search-body{
         height: 90vh;
         display: flex;
@@ -1379,9 +1411,9 @@ p,span{
     .plays{
         display: none;
     }
-    .main-container .left-and-right-body-section{
+    /* .main-container .left-and-right-body-section{
         grid-template-columns: 300px minmax(400px ,auto) !important;
-    }
+    } */
     .bts{
         width: 150px;
     }

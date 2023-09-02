@@ -5,12 +5,21 @@ import { useLocation, useNavigate, NavLink } from 'react-router-dom'
 import Playlistapi from "./apis/playlistApi.json"
 import { Howl } from 'howler'
 import {SigninContext} from "../context/SigninContext"
-import { decodeJwt } from 'jose'
-import axios  from 'axios'
 import { Outlet } from 'react-router-dom';
-import Loading from './SmallComp/Loading'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchLibraryData } from '../redux/cartReducer'
 
 const Home = () => {
+    // getting  playlists from the redux store
+    const dispatch = useDispatch()
+    const list = useSelector(state => state.library.list)
+
+    useEffect(() => {
+        // Dispatch the action to fetch library data when the component mounts
+        dispatch(fetchLibraryData());
+      }, [dispatch]);
+
+
     const BackendUrl = "http://localhost:8000"
     // user details context 
    
@@ -349,7 +358,7 @@ const Home = () => {
                
                 <div className="main-container">
                     <div className="left-and-right-body-section">
-                        <HomeLeftBar  />
+                        <HomeLeftBar  list={list}/>
                         <Outlet/>
                     </div>
                     {

@@ -102,6 +102,7 @@ const Navbar = () => {
                 console.log(error);
               }
         }
+        window.location.reload();
         setIsLoginSuccesful("");
     }
 

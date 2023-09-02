@@ -18,7 +18,7 @@ const Playlist = (props) => {
                     if (id === ele1.playlistId) {
                         return (
                             <>
-                                <div className="playlist-main-right-div">
+                                <div className="playlist-main-right-div" key={ele1.playlistId}>
                                     <div className="playlist-main-container">
                                         <div className="playlist-header-section flex">
                                             <img className="bts" src={`${ele1.url}`} alt="BTS" />
@@ -53,7 +53,8 @@ const Playlist = (props) => {
                                         </div>
                                         <i className="love   fa-regular fa-heart" onClick={
                                             () => {
-                                                dispatch(addToLibrary({...ele1}))
+                                                const token = localStorage.getItem('token');
+                                                dispatch(addToLibrary({...ele1,"token":token}))
                                             }
                                         }></i>
                                         {/* <i className="dots  fa-solid fa-ellipsis"></i> */}

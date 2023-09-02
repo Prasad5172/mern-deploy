@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const auth = require("./middleware/auth")
 require("./db/conn")
 const Register = require("./models/struct")
+const Library = require("./models/library.jsx")
 const RegisterGoogleUser = require("./models/googlestruct")
 const jwt = require("jsonwebtoken")
 const { OAuth2Client } = require("google-auth-library");
@@ -93,6 +94,72 @@ app.post("/logout", auth, async (req, res) => {
         res.status(200).json("logut succesful")
     } catch (error) {
         console.log(error)
+    }
+})
+
+app.post("/library" , async (req,res) => {
+    const token = req.body.token;
+    console.log(token);
+    try {
+        const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
+        const user = await Register.findOne({ _id: verifyToken._id });
+        var userLibrary = await Library.findOne({userId : user._id})
+        const playlistIds = userLibrary.playlists.map((playlist) => playlist);
+        // console.log(userLibrary)
+        console.log(playlistIds)
+        return res.status(200).send(playlistIds)
+
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("error")
+    }
+})
+
+
+app.post("/addtolibrary",async (req,res) => {
+    console.log(req.body)
+    const token = req.body.token;
+    // console.log(req.body)
+    try {
+        const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
+        const user = await Register.findOne({ _id: verifyToken._id });
+        var userLibrary = await Library.findOne({userId : user._id})
+        const {title,url}  = req.body
+        console.log(url,title)
+        if(!userLibrary){
+            userLibrary = new Library({
+                userId:user._id,
+                playlists:[]
+            })
+        }
+        userLibrary.playlists = userLibrary.playlists.concat({"playlistId" : req.body.playlistId,"title":title,"url":url});
+        console.log(userLibrary)
+        await userLibrary.save()
+        return res.status(200).json(userLibrary.playlists);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json("error");
+    }
+})
+
+app.post("/removefromlibrary",async (req,res) => {
+    console.log('i am in removefrom library')
+    const token = req.body.token;
+    // console.log(token);
+    try {
+        const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
+        const user = await Register.findOne({ _id: verifyToken._id });
+        const userLibrary = await Library.findOne({userId : user._id})
+        userLibrary.playlists = userLibrary.playlists.filter((item) => {
+            return item.playlistId !=req.body.playlistId
+        })
+        await userLibrary.save()
+        return res.status(200).json("removed")
+        // user.library = user.library.concat({"playlistId" : req.body.playlistId});
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json("error");
     }
 })
 
@@ -202,7 +269,7 @@ app.post("/verifyOtp", async (req, res) => {
                 password: req.body.password,
                 confirmpassword: req.body.confirmpassword,
             })
-            const token = await registerEmployee.generateAuthToken();
+            // const token = await registerEmployee.generateAuthToken();
             const user = await registerEmployee.save();
             console.log("registred succesfully")
             return res.status(200).json("succesful")
@@ -216,18 +283,7 @@ app.post("/verifyOtp", async (req, res) => {
         res.status(400).json(error)
     }
 })
-app.post("/addtolibrary",async (req,res) => {
-    try {
-        const email = req.body.email;
-        const user = await Register.findOne({ "email" : email});
-        user.library = user.library.concat({"playlistId" : req.body.playlistId});
-        await user.save();
-        return res.status(200).json("added")
-    } catch (error) {
-        console.log(error)
-        return res.status(400).json("already added")
-    }
-})
+
 app.post("/sendEmail", async (req, res) => {
     const userEmail = req.body.email;
     const OTP = otpGenerator.generate(6, {

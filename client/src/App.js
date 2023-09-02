@@ -15,8 +15,10 @@ import ForgotPassword from "./authentication/ForgotPassword"
 import { decodeJwt } from 'jose'
 import axios from 'axios'
 import Loading from './Components/SmallComp/Loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
+  // AsyncStorage.removeItem('persist:root'); 
   const navigate = useNavigate()
   const BackendUrl = "http://localhost:8000"
   const { handleClick, handlePause } = useContext(SigninContext)
@@ -80,7 +82,7 @@ const App = () => {
     };
     setIsLoading(false);
     checkAuthentication();
-  }, []);
+  },[]);
 
 
 
