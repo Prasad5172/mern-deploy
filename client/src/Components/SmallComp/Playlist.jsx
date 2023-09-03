@@ -53,7 +53,10 @@ const Playlist = (props) => {
                                         </div>
                                         <i className="love   fa-regular fa-heart" onClick={
                                             () => {
-                                                const token = localStorage.getItem('token');
+                                                var token = localStorage.getItem('token');
+                                                if(!token){
+                                                    token = localStorage.getItem('profile')
+                                                }
                                                 dispatch(addToLibrary({...ele1,"token":token}))
                                             }
                                         }></i>
