@@ -91,7 +91,7 @@ const HomeLeftBar = (props) => {
                             <div className="library-item">
                                 {
                                     list?.map((item ,ind) => {
-                                        return <LibraryPlaylist {...item} key={item._id}/>
+                                        return <LibraryPlaylist {...item} key={item._id} songPlaylingPlaylistId={props.songPlaylingPlaylistId}/>
                                     })
                                    
                                 }

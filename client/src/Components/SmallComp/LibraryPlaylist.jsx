@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeFromLibrary } from '../../redux/cartReducer'
 
 function LibraryPlaylist(props) {
+  const {songPlaylingPlaylistId} = props
+  console.log(songPlaylingPlaylistId)
   const navigate = useNavigate();
     const dispatch = useDispatch()
   return (
@@ -16,7 +18,10 @@ function LibraryPlaylist(props) {
                 <p>{props.title}</p>
                 <p>Playlist</p>
             </div>
-            <i className="fa-solid fa-volume-high" style={{color: "#00ff11",marginRight:"10px"}}></i>
+            {
+              songPlaylingPlaylistId === props.playlistId && <i className="fa-solid fa-volume-high" style={{color: "#00ff11",marginRight:"10px"}}></i>
+            }
+            
             <i className="fa-solid fa-trash" style={{ "color": "#a7a7a7" }} onClick={
               () => {
                 const token = localStorage.getItem('token')

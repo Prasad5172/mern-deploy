@@ -253,8 +253,10 @@ p,span{
     margin: 10px ;
     padding: 15px;
     padding-right: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
     border-radius: 8px;
-    height: 80%;
+    height: calc(77vh - 10px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

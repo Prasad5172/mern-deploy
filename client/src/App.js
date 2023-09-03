@@ -29,7 +29,8 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSearchVisible, setSerchVisible] = useState(false);
   const [IsLoginSuccesful, setIsLoginSuccesful] = React.useState("");
-  const [isPasswordResetSuccesful, setIsPasswordResetSuccesful] = useState("")
+  const [isPasswordResetSuccesful, setIsPasswordResetSuccesful] = React.useState("")
+
 
   useEffect(() => {
     const credential = localStorage.getItem("profile");
@@ -39,7 +40,7 @@ const App = () => {
   
       if (payload) {
         axios
-          .get(`${BackendUrl}protected`, {
+          .get(`${BackendUrl}protected`, {  
             headers: {
               Authorization: `Bearer ${credential}`,
             },
@@ -88,7 +89,7 @@ const App = () => {
 
   return (
     <>
-        { isLoading && <Loading/> }
+        {/* { isLoading && <Loading/> } */}
       <SigninContext.Provider value={{ isAuthenticated, setAuthenticated, setIsLoginSuccesful, IsLoginSuccesful, isPasswordResetSuccesful, setIsPasswordResetSuccesful, isSearchVisible, setSerchVisible, userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isLoading, setIsLoading }}>
         <Routes>
           <Route exact path='/' element={<Home />}>

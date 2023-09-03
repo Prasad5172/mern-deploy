@@ -4,7 +4,7 @@ import HomeLeftBar from './HomeLeftBar'
 import { useLocation, useNavigate, NavLink } from 'react-router-dom'
 import Playlistapi from "./apis/playlistApi.json"
 import { Howl } from 'howler'
-import {SigninContext} from "../context/SigninContext"
+import { SigninContext } from "../context/SigninContext"
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchLibraryData } from '../redux/cartReducer'
@@ -17,20 +17,20 @@ const Home = () => {
     useEffect(() => {
         // Dispatch the action to fetch library data when the component mounts
         dispatch(fetchLibraryData());
-      }, [dispatch]);
+    }, [dispatch]);
 
 
     const BackendUrl = "http://localhost:8000"
     // user details context 
-   
-    const {isLoading, setIsLoading,profile,setProfile,displayProfile,setDisplayProfile,userName,setUserName,isAuthenticated,setAuthenticated,IsLoginSuccesful,setIsLoginSuccesful,isPasswordResetSuccesful,setIsPasswordResetSuccesful,isSearchVisible,setSerchVisible} = useContext(SigninContext)
+
+    const { isLoading, setIsLoading, profile, setProfile, displayProfile, setDisplayProfile, userName, setUserName, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful, setIsPasswordResetSuccesful, isSearchVisible, setSerchVisible } = useContext(SigninContext)
 
 
 
     const navigate = useNavigate()
     const location = useLocation()
 
-  
+
     useEffect(() => {
         if (window.location.hash === '#login' && !isAuthenticated) {
             const floationEle = document.getElementById('floating-element')
@@ -41,10 +41,10 @@ const Home = () => {
         }
     }, [location]);
 
- 
 
 
-    
+
+
 
 
     const handelCloseBtn = () => {
@@ -59,18 +59,20 @@ const Home = () => {
     const [soundVolume, setSoundVolume] = useState(1.0);
     const [VolumeSpeaker, setVolumeSpeaker] = useState("highVolume") // to show which speack muted low or high
     const [durationOfSong, setDurationOfSong] = useState(0);
+    const [songPlaylingPlaylistId, setSongPlayingPlaylistId] = useState("")
+
     // current songPlaylist index
-    const [referencePlaylistInd,setReferencePlaylistInd] = useState(-1)
+    const [referencePlaylistInd, setReferencePlaylistInd] = useState(-1)
     // song-details in footter section of the home 
     const [imgUrl, setImgUrl] = useState("#")
     const [songName, setSongName] = useState("")
     const [songDescription, setSongDescription] = useState("")
-    const [loginSongImg,setLoginSongImg] = useState("");
-    
+    const [loginSongImg, setLoginSongImg] = useState("");
+
 
     const latestSongPlayingInd = useRef(songPlayingInd);
 
-    const handleClick =   (ind,referenceInd,isSong) => {
+    const handleClick = (ind, referenceInd, isSong) => {
         // console.log("i am in handle click in home")
         console.log(referenceInd)
         setReferencePlaylistInd(referenceInd)
@@ -78,34 +80,34 @@ const Home = () => {
         const length = Playlistapi[referenceInd].songs.length
         console.log(ind);
         if (isAuthenticated) {
-            if(ind < length){
-                
-                        // console.log(ele)
-                        const ele = Playlistapi[referenceInd].songs[ind];
-                        setSongPlayingInd(ind);
-                        latestSongPlayingInd.current = ind;
-                        const audio = ele.audio;
-                        setImgUrl(ele.url)
-                        setSongName(ele.title)
-                        setSongDescription(ele.singer)
-                        if (soundRef.current == null) {
-                            soundRef.current = audio;
-                            console.log(soundRef.current)
-                            setAudioPos(0);
-                            soundPlay(audio,referenceInd);
-                            setIsPlaying(true); // Toggle the play/pause state
-                        } else {
-                            soundRef.current.pause();
-                            soundRef.current = audio;
-                            setAudioPos(0);
-                            soundPlay(audio,referenceInd);
-                            setIsPlaying(true); // Toggle the play/pause state
-                        }
-                    // console.log("handleCllick-"+ind)
-                    // console.log(songPlayingInd)
-            }else{
+            if (ind < length) {
+
+                // console.log(ele)
+                const ele = Playlistapi[referenceInd].songs[ind];
+                setSongPlayingInd(ind);
+                latestSongPlayingInd.current = ind;
+                const audio = ele.audio;
+                setImgUrl(ele.url)
+                setSongName(ele.title)
+                setSongDescription(ele.singer)
+                if (soundRef.current == null) {
+
+                    soundRef.current = audio;
+                    console.log(soundRef.current)
+                    setAudioPos(0);
+                    soundPlay(audio, referenceInd);
+                    setIsPlaying(true); // Toggle the play/pause state
+                } else {
+                    soundRef.current.pause();
+                    soundRef.current = audio;
+                    setAudioPos(0);
+                    soundPlay(audio, referenceInd);
+                    setIsPlaying(true); // Toggle the play/pause state
+                }
+                setSongPlayingPlaylistId(Playlistapi[referenceInd].playlistId)
+            } else {
                 console.log("i am end")
-                soundRef.current=null;
+                soundRef.current = null;
                 setAudioPos(0);
                 setIsPlaying(false)
                 setReferencePlaylistInd(-1);
@@ -113,16 +115,17 @@ const Home = () => {
                 setSongName("")
                 setSongDescription("")
                 setDurationOfSong(0)
+                setSongPlayingPlaylistId("")
                 const songPlayedId = document.getElementById('songPlayedId');
                 songPlayedId.style.setProperty('--song-slider-width', "0%");
                 const volumeChange = document.getElementById('volumeChange');
                 volumeChange.style.setProperty('--slider-width', 100 + '%');
                 setSoundVolume(1)
             }
-        } else if(isSong) {
+        } else if (isSong) {
             window.location.href = '#login';
             setLoginSongImg(Playlistapi[referenceInd].songs[ind].url)
-        }else{
+        } else {
             window.location.href = '#login';
             setLoginSongImg(Playlistapi[referenceInd].url)
         }
@@ -140,9 +143,9 @@ const Home = () => {
     // If we didn't use useRef and directly accessed the state variable songPlayingInd inside the onend callback, it would likely hold the stale value,
     //  causing issues like playing the same song repeatedly or unexpected behavior in handling the next song to be played.
 
-    const soundPlay = (src,referenceInd) => {
+    const soundPlay = (src, referenceInd) => {
         // console.log("i am soundPlay in home")
-        
+
         const sound = new Howl({
             src,
             html5: true,
@@ -152,8 +155,8 @@ const Home = () => {
                 // Get the latest songPlayingInd value from the ref
                 const nextSongPlayingInd = latestSongPlayingInd.current + 1;
                 latestSongPlayingInd.current = nextSongPlayingInd; // Update the ref with the next value
-                
-                handleClick(nextSongPlayingInd,referenceInd)
+
+                handleClick(nextSongPlayingInd, referenceInd)
             },
             onload: () => {
                 setDurationOfSong(sound.duration());
@@ -171,21 +174,21 @@ const Home = () => {
     const forward = () => {
         console.log("forward")
         const length = Playlistapi[referencePlaylistInd].songs.length
-        if (songPlayingInd+1 < length) {
-                const ele = Playlistapi[referencePlaylistInd].songs[songPlayingInd+1];
-                const ind = songPlayingInd+1;
-                    const audio = ele.audio;
-                    soundRef.current.pause();
-                    soundRef.current = audio;
-                    setAudioPos(0);
-                    soundPlay(audio,referencePlaylistInd);
-                    setIsPlaying(true); // Toggle the play/pause state
-                    setSongPlayingInd(ind);
-                    latestSongPlayingInd.current = ind;
-                    setImgUrl(ele.url)
-                    setSongDescription(ele.singer)
-                    setSongName(ele.title)
-              
+        if (songPlayingInd + 1 < length) {
+            const ele = Playlistapi[referencePlaylistInd].songs[songPlayingInd + 1];
+            const ind = songPlayingInd + 1;
+            const audio = ele.audio;
+            soundRef.current.pause();
+            soundRef.current = audio;
+            setAudioPos(0);
+            soundPlay(audio, referencePlaylistInd);
+            setIsPlaying(true); // Toggle the play/pause state
+            setSongPlayingInd(ind);
+            latestSongPlayingInd.current = ind;
+            setImgUrl(ele.url)
+            setSongDescription(ele.singer)
+            setSongName(ele.title)
+
         }
     }
 
@@ -198,61 +201,61 @@ const Home = () => {
                 // soundRef.current._src is the current id path 
                 soundRef.current.pause();
                 setAudioPos(0);
-                soundPlay(soundRef.current._src,referencePlaylistInd)
+                soundPlay(soundRef.current._src, referencePlaylistInd)
                 setIsPlaying(true); // Toggle the play/pause state
             } else {
-                    const ele = Playlistapi[referencePlaylistInd].songs[songPlayingInd-1];
-                    const ind = songPlayingInd-1;
-                        const audio = ele.audio;
-                        soundRef.current.pause();
-                        soundRef.current = audio;
-                        setAudioPos(0);
-                        soundPlay(audio,referencePlaylistInd);
-                        setIsPlaying(true); // Toggle the play/pause state
-                        setSongPlayingInd(ind);
-                        latestSongPlayingInd.current = ind;
-                        setImgUrl(ele.url)
-                        setSongDescription(ele.singer)
-                        setSongName(ele.title)
-                 
+                const ele = Playlistapi[referencePlaylistInd].songs[songPlayingInd - 1];
+                const ind = songPlayingInd - 1;
+                const audio = ele.audio;
+                soundRef.current.pause();
+                soundRef.current = audio;
+                setAudioPos(0);
+                soundPlay(audio, referencePlaylistInd);
+                setIsPlaying(true); // Toggle the play/pause state
+                setSongPlayingInd(ind);
+                latestSongPlayingInd.current = ind;
+                setImgUrl(ele.url)
+                setSongDescription(ele.singer)
+                setSongName(ele.title)
+
             }
         }
     }
     useEffect(() => {
         const handleKeyPress = (e) => {
             if (!e.target.tagName.toLowerCase().match(/input|textarea/)) {
-              if (e.code === "Space") {
-                e.preventDefault(); // Prevent default behavior of space bar
-                if (soundRef.current) {
-                  if (isPlaying) {
-                    // Pause the audio and store the current position
-                    soundRef.current.pause();
-                    setAudioPos(soundRef.current.seek());
-                  } else {
-                    // Resume audio playback from the stored position
-                    soundRef.current.seek(audioPos);
-                    soundRef.current.play();
-                    setPauseButton(!pauseButton);
-                  }
-                  // Toggle the state variables
-                  setIsPlaying(!isPlaying);
+                if (e.code === "Space") {
+                    e.preventDefault(); // Prevent default behavior of space bar
+                    if (soundRef.current) {
+                        if (isPlaying) {
+                            // Pause the audio and store the current position
+                            soundRef.current.pause();
+                            setAudioPos(soundRef.current.seek());
+                        } else {
+                            // Resume audio playback from the stored position
+                            soundRef.current.seek(audioPos);
+                            soundRef.current.play();
+                            setPauseButton(!pauseButton);
+                        }
+                        // Toggle the state variables
+                        setIsPlaying(!isPlaying);
+                    }
                 }
-              }
             }
-          };
-          
-      
+        };
+
+
         // Add the event listener when the component mounts
         window.addEventListener("keydown", handleKeyPress);
-      
+
         // Clean up the event listener when the component unmounts
         return () => {
-          window.removeEventListener("keydown", handleKeyPress);
+            window.removeEventListener("keydown", handleKeyPress);
         };
-      }, [isPlaying, audioPos]); // Include isPlaying and audioPos in the dependency array
-      
-      
-    
+    }, [isPlaying, audioPos]); // Include isPlaying and audioPos in the dependency array
+
+
+
 
     const handlePause = () => {
         console.log("handlePause")
@@ -279,7 +282,7 @@ const Home = () => {
     };
 
     const handleVolumeChange = (event) => {
-        console.log("handleVolumeChange") 
+        console.log("handleVolumeChange")
         // console.log(soundRef.current)
         const newVolume = parseFloat(event.target.value); //event.target.value gives the string we need to convert into string use the parseFloat because setp we taken is 0.01
         const percentage = 100 - (1 - newVolume) * 100;
@@ -297,7 +300,7 @@ const Home = () => {
             } else {
                 setVolumeSpeaker("highVolume")
             }
-        }else{
+        } else {
             const volumeChange = document.getElementById('volumeChange');
             volumeChange.style.setProperty('--slider-width', 100 + '%');
         }
@@ -347,19 +350,17 @@ const Home = () => {
             clearInterval(percentageIntervalId);
         };
     }, [durationOfSong, isPlaying]);
-
-
-
+    
 
     return (
         <>
-        <SigninContext.Provider value={{userName,setUserName,displayProfile,setDisplayProfile,profile,setProfile,isAuthenticated, setAuthenticated,IsLoginSuccesful,setIsLoginSuccesful,soundRef,setAudioPos,isPlaying,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,songPlayingInd,setSongPlayingInd,referencePlaylistInd,soundRef,isPasswordResetSuccesful,setSerchVisible,handleClick,isSearchVisible,handlePause,setIsPasswordResetSuccesful}} >
+            <SigninContext.Provider value={{ userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, soundRef, setAudioPos, isPlaying, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, songPlayingInd, setSongPlayingInd, referencePlaylistInd, soundRef, isPasswordResetSuccesful, setSerchVisible, handleClick, isSearchVisible, handlePause, setIsPasswordResetSuccesful }} >
 
-               
+
                 <div className="main-container">
                     <div className="left-and-right-body-section">
-                        <HomeLeftBar  list={list}/>
-                        <Outlet/>
+                        <HomeLeftBar list={list} songPlaylingPlaylistId={songPlaylingPlaylistId}/>
+                        <Outlet />
                     </div>
                     {
                         isAuthenticated ?
@@ -456,7 +457,7 @@ const Home = () => {
                     )
                 }
 
-        </SigninContext.Provider>
+            </SigninContext.Provider>
 
         </>
     )
