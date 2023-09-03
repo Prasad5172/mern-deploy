@@ -124,6 +124,9 @@ app.post("/addtolibrary",async (req,res) => {
     try {
         const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
         const user = await Register.findOne({ _id: verifyToken._id });
+        if(!user){
+            user = await RegisterGoogleUser.findOne({_id: verifyToken._id})
+        }
         var userLibrary = await Library.findOne({userId : user._id})
         const {title,url}  = req.body
         console.log(url,title)
