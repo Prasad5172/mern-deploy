@@ -5,7 +5,7 @@ import { removeFromLibrary } from '../../redux/cartReducer'
 
 function LibraryPlaylist(props) {
   const { songPlaylingPlaylistId } = props
-  console.log(songPlaylingPlaylistId)
+  // console.log(songPlaylingPlaylistId)
   const navigate = useNavigate();
   const dispatch = useDispatch()
   return (
@@ -25,6 +25,7 @@ function LibraryPlaylist(props) {
         <i className="fa-solid fa-trash" style={{ "color": "#a7a7a7" }} onClick={
           () => {
             var token = localStorage.getItem('token');
+            console.log(token)
             if (!token) {
               token = localStorage.getItem('profile')
             }

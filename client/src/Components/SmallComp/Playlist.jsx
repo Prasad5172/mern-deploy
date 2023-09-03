@@ -8,6 +8,12 @@ import { SigninContext } from '../../context/SigninContext'
 import { useDispatch } from 'react-redux'
 import { addToLibrary } from '../../redux/cartReducer'
 const Playlist = (props) => {
+    var token = localStorage.getItem('token');
+    console.log(token)
+    if (!token) {
+        token = localStorage.getItem('profile')
+    }
+    console.log(token)
     const { handleClick, handlePause, isPlaying, referencePlaylistInd, soundRef } = useContext(SigninContext)
     const dispatch = useDispatch()
     const { id } = useParams()
@@ -53,11 +59,8 @@ const Playlist = (props) => {
                                         </div>
                                         <i className="love   fa-regular fa-heart" onClick={
                                             () => {
-                                                var token = localStorage.getItem('token');
-                                                if(!token){
-                                                    token = localStorage.getItem('profile')
-                                                }
-                                                dispatch(addToLibrary({...ele1,"token":token}))
+
+                                                dispatch(addToLibrary({ ...ele1, "token": token }))
                                             }
                                         }></i>
                                         {/* <i className="dots  fa-solid fa-ellipsis"></i> */}

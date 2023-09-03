@@ -31,10 +31,11 @@ const App = () => {
   const [isSearchVisible, setSerchVisible] = useState(false);
   const [IsLoginSuccesful, setIsLoginSuccesful] = React.useState("");
   const [isPasswordResetSuccesful, setIsPasswordResetSuccesful] = React.useState("")
-
+  const [token,setToken] = React.useState("")
 
   useEffect(() => {
     const credential = localStorage.getItem("profile");
+     setToken(credential);
   
     if (credential) {
       var payload = credential ? decodeJwt(credential) : undefined;
@@ -60,6 +61,7 @@ const App = () => {
   
     const checkAuthentication = async () => {
       const cookie = localStorage.getItem("token");
+      setToken(cookie)
       if (cookie) {
         const tokenObject = { token: cookie };
         try {
@@ -84,6 +86,7 @@ const App = () => {
     };
     setIsLoading(false);
     checkAuthentication();
+    console.log("token   ---- " + token)
   },[]);
 
 

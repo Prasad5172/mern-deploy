@@ -103,11 +103,15 @@ app.post("/library" , async (req,res) => {
     console.log(token);
     try {
         const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
-        const user = await Register.findOne({ _id: verifyToken._id });
+        console.log(verifyToken)
+        var user = await Register.findOne({ _id: verifyToken._id });
+        if(!user){
+            user = await RegisterGoogleUser.findOne({_id: verifyToken._id})
+        }
         var userLibrary = await Library.findOne({userId : user._id})
         const playlistIds = userLibrary.playlists.map((playlist) => playlist);
         // console.log(userLibrary)
-        console.log(playlistIds)
+        // console.log(playlistIds)
         return res.status(200).send(playlistIds)
 
     }catch(err){
@@ -123,7 +127,7 @@ app.post("/addtolibrary",async (req,res) => {
     // console.log(req.body)
     try {
         const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
-        const user = await Register.findOne({ _id: verifyToken._id });
+        var user = await Register.findOne({ _id: verifyToken._id });
         if(!user){
             user = await RegisterGoogleUser.findOne({_id: verifyToken._id})
         }
@@ -152,7 +156,10 @@ app.post("/removefromlibrary",async (req,res) => {
     // console.log(token);
     try {
         const verifyToken = jwt.verify(token, process.env.REACT_APP_SECRET_KEY);
-        const user = await Register.findOne({ _id: verifyToken._id });
+        var user = await Register.findOne({ _id: verifyToken._id });
+        if(!user){
+            user = await RegisterGoogleUser.findOne({_id: verifyToken._id})
+        }
         const userLibrary = await Library.findOne({userId : user._id})
         userLibrary.playlists = userLibrary.playlists.filter((item) => {
             return item.playlistId !=req.body.playlistId
@@ -403,9 +410,13 @@ app.post("/googleSignin", async (req, res) => {
         // console.log(email)
         const user = await RegisterGoogleUser.findOne({ "email": req.body.email });
         const email_verified = req.body.email_verified;
+        const token = await user.generateAuthToken();
+        const newgoogleuser = await user.save();
+        console.log(token)
         if (user != null && email_verified) {
             console.log("Login succesful")
-            return res.status(200).json("succesful")
+            return res.status(200).json({"data":"succesful","token":token})
+            
         } else {
             console.log("signup")
             return res.status(400).json("signup");

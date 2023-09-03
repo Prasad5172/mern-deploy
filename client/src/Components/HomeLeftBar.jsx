@@ -8,11 +8,11 @@ import LibraryPlaylist from './SmallComp/LibraryPlaylist'
 
 const HomeLeftBar = (props) => {
     const {list} = props;
-    console.log(list)
+    // console.log(list)
     const { setSerchVisible, isAuthenticated } = useContext(SigninContext);
     const location = useLocation();
     const [isSearchActive, setSearchActive] = useState(false);
-
+    
     useEffect(() => {
         const currentUrl = location.pathname;
         if (currentUrl == "/") {

@@ -255,7 +255,6 @@ const SinginPage = (props) => {
                             });
                             const data = await res.json()
                             console.log(data)
-                            // console.log(res)
                             if (res.ok) {
                               navigate("/")
                               props.setAuthenticated(true)
@@ -263,9 +262,10 @@ const SinginPage = (props) => {
                               setDisplayProfile(true);
                               setAuthenticated(true);
                               setProfile(payload.picture)
+                              window.localStorage.setItem("token",data.token)
                               window.localStorage.setItem("profile", credential);
                             } else {
-                              setIsLoginSuccesful(data);
+                              setIsLoginSuccesful(data.data);
                               signinBtnFailedAnimation();
                               statusOfLogin();
                             }
