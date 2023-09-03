@@ -20,7 +20,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const App = () => {
   // AsyncStorage.removeItem('persist:root'); 
   const navigate = useNavigate()
-  const BackendUrl = "http://localhost:8000"
+  // const BackendUrl = "http://localhost:8000"
+  const BackendUrl = ""
   const { handleClick, handlePause } = useContext(SigninContext)
   const [isAuthenticated, setAuthenticated] = React.useState(false);
   const [userName, setUserName] = React.useState("")

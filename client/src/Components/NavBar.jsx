@@ -10,7 +10,8 @@ import { all } from 'axios';
 
 
 const Navbar = () => {
-    const BackendUrl = "http://localhost:8000"
+    // const BackendUrl = "http://localhost:8000"
+    const BackendUrl = ""
     // using context
     const { userName,setUserName,displayProfile,setDisplayProfile,profile,setIsLoginSuccesful,soundRef,setAudioPos,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,setSongPlayingInd,isSearchVisible,setSerchVisible,isAuthenticated,setAuthenticated} = useContext(SigninContext);
     const [num, setNum] = useState(-1)

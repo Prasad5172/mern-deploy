@@ -4,7 +4,8 @@ import { SigninContext } from '../context/SigninContext'
 import blackLogo from "../black-logo.jpg"
 import "./SigninAndSignup.css"
 function ForgotPassword(props) {
-    const BackendUrl = "http://localhost:8000"
+    const BackendUrl = ""
+    // const BackendUrl = "http://localhost:8000"
     const navigate = useNavigate()
     const location = useLocation()
     const { userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful } = useContext(SigninContext)

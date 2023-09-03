@@ -9,7 +9,8 @@ import blackLogo from "../black-logo.jpg"
 import "./Toast.css"
 
 const SinginPage = (props) => {
-  const BackendUrl = "http://localhost:8000"
+  const BackendUrl = ""
+  // const BackendUrl = "http://localhost:8000"
   const {  setUserName,  setDisplayProfile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful } = useContext(SigninContext)
   useEffect(() => {
     if (isPasswordResetSuccesful == "resetpassword") {

@@ -20,7 +20,8 @@ const Home = () => {
     }, [dispatch]);
 
 
-    const BackendUrl = "http://localhost:8000"
+    const BackendUrl = ""
+    // const BackendUrl = "http://localhost:8000"
     // user details context 
 
     const { isLoading, setIsLoading, profile, setProfile, displayProfile, setDisplayProfile, userName, setUserName, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful, setIsPasswordResetSuccesful, isSearchVisible, setSerchVisible } = useContext(SigninContext)

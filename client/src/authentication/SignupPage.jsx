@@ -6,7 +6,8 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios"
 import "./Toast.css"
 const SignupPage = () => {
-  const BackendUrl = "http://localhost:8000"
+  // const BackendUrl = "http://localhost:8000"
+  const BackendUrl = ""
   const navigate = useNavigate();
   const [formdata, setformData] = useState({
     firstname: "",

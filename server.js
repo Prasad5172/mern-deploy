@@ -17,7 +17,8 @@ var nodemailer = require("nodemailer")
 const Otp = require("./models/otpStruct")
 const otpGenerator = require("otp-generator")
 const path = require("path")
-const BackendLocalHost_URL = "http://localhost:8000"
+// const BackendLocalHost_URL = "http://localhost:8000"
+const BackendLocalHost_URL = ""
 const BackendHostingSite_URL = "https://ill-shawl-lamb.cyclic.cloud"
 
 
