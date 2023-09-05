@@ -21,14 +21,3 @@ const PodcastsCard = () => {
 }
 export default PodcastsCard;
 
-// .box-on-search{
-//     flex: 1 1 18%; /* Initial size of the card, adjust as needed */
-//     max-width: 18%; /* Ensures the card doesn't exceed 30% of the screen width */
-//     min-width: 150px;
-//     aspect-ratio: 1 / 1; /* Maintain a square aspect ratio for the card */
-//     background-color: aqua;
-//     border-radius: 5px;
-//     overflow: hidden;
-//     transition: flex-basis 0.3s ease;
-//     position: relative;
-// }

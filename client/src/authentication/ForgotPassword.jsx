@@ -181,10 +181,12 @@ function ForgotPassword(props) {
             closeIcon = document.querySelector(".close2"),
             progress = document.querySelector(".progress2");
         let timer1, timer2;
+        toast.classList.remove("display-none");
         toast.classList.add("active");
         progress.classList.add("active");
 
         setTimeout(() => {
+            toast.classList.add("display-none");
             toast.classList.remove("active");
         }, 5000); //1s = 1000 milliseconds
 
@@ -337,7 +339,7 @@ function ForgotPassword(props) {
                 <>
                     <div className="outer-box" id="forgotpage-signin">
                     
-                        <div className="toast toast2" style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}` }}>
+                        <div className="toast toast2 display-none" style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}` }}>
                             <div className="toast-content">
                                 <i className={`fa-solid ${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "fa-check" : "fa-xmark"} check`} style={{ background: `${(isResetSuccesful == "succesful" || isResetSuccesful == "otpsend" || isResetSuccesful == "verifiedotp") ? "green" : "red"}`, color: "white" }}></i>
                                 <div className="message">

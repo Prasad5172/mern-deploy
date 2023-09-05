@@ -14,8 +14,8 @@ import ErrorPage from "./Components/ErrorPage"
 import ForgotPassword from "./authentication/ForgotPassword"
 import { decodeJwt } from 'jose'
 import axios from 'axios'
-import Loading from './Components/SmallComp/Loading';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Loading from './Components/SmallComp/Loading';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
   // AsyncStorage.removeItem('persist:root'); 

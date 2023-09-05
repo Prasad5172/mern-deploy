@@ -1,13 +1,28 @@
-import React, { useContext } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useState,useEffect } from 'react'
+import {  useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { removeFromLibrary } from '../../redux/cartReducer'
 
 function LibraryPlaylist(props) {
   const { songPlaylingPlaylistId } = props
   // console.log(songPlaylingPlaylistId)
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  function TextWithEllipsis({ text, maxLength }) {
+    const [truncatedText, setTruncatedText] = useState(text);
+  
+    useEffect(() => {
+      if (text.length > maxLength) {
+        setTruncatedText(text.slice(0, maxLength) + '...');
+      } else {
+        setTruncatedText(text);
+      }
+    }, [text, maxLength]);
+  
+    return <p>{truncatedText}</p>;
+  }
+
   return (
     <>
       <div className="library-playlist" onClick={() => {
@@ -15,7 +30,7 @@ function LibraryPlaylist(props) {
       }}>
         <img src={`${props.url}`} alt="image" className='library-image' />
         <div className='library-playlist-details'>
-          <p>{props.title}</p>
+        <TextWithEllipsis  text={`${props.title}`} maxLength={6} />
           <p>Playlist</p>
         </div>
         {

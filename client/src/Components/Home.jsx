@@ -352,6 +352,20 @@ const Home = () => {
         };
     }, [durationOfSong, isPlaying]);
     
+    // to hide the text after some no of characters
+    function TextWithEllipsis({ text, maxLength }) {
+        const [truncatedText, setTruncatedText] = useState(text);
+      
+        useEffect(() => {
+          if (text.length > maxLength) {
+            setTruncatedText(text.slice(0, maxLength) + '...');
+          } else {
+            setTruncatedText(text);
+          }
+        }, [text, maxLength]);
+      
+        return <p>{truncatedText}</p>;
+      }
 
     return (
         <>
@@ -370,8 +384,9 @@ const Home = () => {
                                     <div className="footer-song-and-name flex">
                                         <img className="song-img-footer" src={imgUrl} alt="" />
                                         <div className="footer-song-name-and-description">
-                                            <p>{songName}</p>
-                                            <p>{songDescription}</p>
+                                        <TextWithEllipsis text={`${songName}`} maxLength={8} />
+                                        <TextWithEllipsis text={`${songDescription}`} maxLength={12} />
+                                           
                                         </div>
                                     </div>
 
@@ -417,11 +432,9 @@ const Home = () => {
 
                                 </div>) : (
                                 <>
-                                    <a href="#">
                                         <div className="footer-for-signup flex">
                                             <div className="footer-for-signup-content">
                                                 <span>PREVIEW OF SPOTIFY</span>
-                                                <br />
                                                 <span>Sign up to get unlimited songs and podcasts with occasional ads.No credit card needed</span>
                                             </div>
                                             <div className="footer-signup-button">
@@ -432,7 +445,6 @@ const Home = () => {
                                                 </NavLink>
                                             </div>
                                         </div>
-                                    </a>
                                 </>
                             )
                     }
@@ -442,7 +454,8 @@ const Home = () => {
                         <>
                             <div className="floating-element centering " id='floating-element'>
                                 <div className="main-floating-signup flex">
-                                    <img className='image-in-floation-signup' src={`${loginSongImg}`} alt="img" />
+                                    { loginSongImg !="" && <img className='image-in-floation-signup' src={`${loginSongImg}`} alt="img" />}
+                                        
                                     <div className="floating-content-signup flex">
                                         <h1>Start listening with a free Spotify account</h1>
                                         <NavLink to="/signup"><button className='primary-button signup-for-free-btn'>sign up for free</button></NavLink>

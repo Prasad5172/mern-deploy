@@ -100,10 +100,12 @@ const SinginPage = (props) => {
       closeIcon = document.querySelector(".close"),
       progress = document.querySelector(".progress");
     let timer1, timer2;
+    toast.classList.remove("display-none");
     toast.classList.add("active");
     progress.classList.add("active");
 
     setTimeout(() => {
+      toast.classList.add("display-none");
       toast.classList.remove("active");
     }, 5000); //1s = 1000 milliseconds
 
@@ -160,7 +162,7 @@ const SinginPage = (props) => {
         !isAuthenticated && (
           <>
             <div className="outer-box" id="signin-page">
-              <div className="toast" style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}` }}>
+              <div className="toast display-none" style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}` }}>
                 <div className="toast-content">
                   <i className={`fa-solid ${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "fa-check" : "fa-xmark"} check`} style={{ background: `${IsLoginSuccesful == "succesful" || isPasswordResetSuccesful == "resetpassword" ? "green" : "red"}`, color: "white" }}></i>
                   <div className="message">

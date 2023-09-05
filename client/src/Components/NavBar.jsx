@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState,useRef } from 'react'
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleChevronLeft, faCircleChevronRight, faMinus, faMagnifyingGlass, faChevronRight } from '@fortawesome/free-solid-svg-icons'
@@ -13,11 +13,13 @@ const Navbar = () => {
     // const BackendUrl = "http://localhost:8000"
     const BackendUrl = ""
     // using context
-    const { userName,setUserName,displayProfile,setDisplayProfile,profile,setIsLoginSuccesful,soundRef,setAudioPos,setIsPlaying,setPauseButton,setImgUrl,setSongName,setSongDescription,setSongPlayingInd,isSearchVisible,setSerchVisible,isAuthenticated,setAuthenticated} = useContext(SigninContext);
+    const { userName, setUserName, displayProfile, setDisplayProfile, profile, setIsLoginSuccesful, soundRef, setAudioPos, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, setSongPlayingInd, isSearchVisible, setSerchVisible, isAuthenticated, setAuthenticated } = useContext(SigninContext);
     const [num, setNum] = useState(-1)
     const [button, setButton] = useState(true);
     const [click, setClick] = useState(false);
-    const [isAccountDetailsVisible, setAccountDeteilsVisible] = useState(false)
+    const [isDropdownVisible, setDropdownVisible] = useState(false);
+    const dropdownRef = useRef(null);
+
     useEffect(() => {
         if (isSearchVisible) {
             const inputField = document.getElementById('middle');
@@ -47,15 +49,13 @@ const Navbar = () => {
 
 
     }
-    const handelClickAccount = () => {
-        setAccountDeteilsVisible(!isAccountDetailsVisible)
-    }
 
-    const logoutFunction =async (e) => {
-        if(soundRef.current !==null){
+
+    const logoutFunction = async (e) => {
+        if (soundRef.current !== null) {
             soundRef.current.pause();
             setAudioPos(0);
-            soundRef.current=null;
+            soundRef.current = null;
             setIsPlaying(false)
             setPauseButton(false)
             setSongDescription("")
@@ -63,21 +63,21 @@ const Navbar = () => {
             setImgUrl("")
             setSongPlayingInd(-1);
         }
-        if(localStorage.getItem("profile")){
+        if (localStorage.getItem("profile")) {
             googleLogout();
             localStorage.clear()
             setAuthenticated(false)
-            setAccountDeteilsVisible(false)
+            setDropdownVisible(false)
             setDisplayProfile(false)
-        }else{
+        } else {
             const token = localStorage.getItem("token");
             try {
                 const res = await fetch(`${BackendUrl}/logout`, {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({"token":token})
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ "token": token })
                 })
                 const data = await res.json();
                 console.log(data);
@@ -86,26 +86,44 @@ const Navbar = () => {
                     localStorage.removeItem("name")
                     localStorage.removeItem("email")
                     setAuthenticated(false)
-                    setAccountDeteilsVisible(false)
+                    setDropdownVisible(false)
                     setDisplayProfile(false)
                     navigate("/")
                 }
                 function deleteCookies() {
                     var allCookies = document.cookie.split(';');
                     console.log(allCookies)
-                    for (var i = 0; i < allCookies.length; i++){
+                    for (var i = 0; i < allCookies.length; i++) {
                         document.cookie = allCookies[i] + "=;expires="
-                        + new Date(0).toUTCString();
+                            + new Date(0).toUTCString();
                     }
                 }
                 deleteCookies();
-              } catch (error) {
+            } catch (error) {
                 console.log(error);
-              }
+            }
         }
         window.location.reload();
         setIsLoginSuccesful("");
     }
+
+
+    const toggleDropdown = () => {
+        const dropdown = document.getElementById('drop-down-menu-nav-account')
+        dropdown.classList.toggle("display-none")
+    }
+
+    
+    window.onclick = function(e){
+        console.log(e.target)
+        if(e.target.id !== 'drop-down-menu-nav-account' &&  e.target.id !=='account-logo' && e.target.id !='for-clicking-outside'){
+            const dropdown = document.getElementById('drop-down-menu-nav-account')
+            if(dropdown && !dropdown.classList.contains('display-none')) {
+                dropdown.classList.toggle('display-none');
+            }
+        }
+    }
+
 
     return (
         <>
@@ -114,11 +132,7 @@ const Navbar = () => {
                     <div className="arrow-container">
                         <FontAwesomeIcon className="left-icon-in-nav icon-in-nav" id='left-icon' icon={faChevronRight} onClick={handelClick} />
                     </div>
-                    <div className="arrow-container">
-                        <FontAwesomeIcon className="right-icon-in-nav icon-in-nav" id='right-icon' icon={faChevronRight} onClick={() => {
-                            navigate(1)
-                        }} />
-                    </div>
+                    
                 </div>
                 <div className="input-flex-grow">
                     {
@@ -136,17 +150,11 @@ const Navbar = () => {
                     !isAuthenticated && (
                         <>
 
-                            {
-                                button && (
-                                    <><a href="https://www.spotify.com/in-en/premium/?ref=web_loggedout_premium_button" target='_blank' className='a1'>Premium</a>
-                                        <a href="https://support.spotify.com/in-en/" target="_blank" className='a2'>Support</a>
-                                        <a href="https://www.spotify.com/in-en/download/windows/" target='_blank' className='a3'>Download</a><FontAwesomeIcon icon={faMinus} className="faminus" rotation={90} /></>
-                                )
-                            }
+                           
                             {
                                 !button && !click && (
                                     <>
-                                        <div className="drop-down-menu-nav-before-signup " id='drop-down-menu-nav-before-signup'>
+                                        <div className="drop-down-menu-nav-before-signup " id='drop-down-menu-nav-before-signup '>
                                             <div className="drop-down flex">
                                                 <div>Premium</div>
                                                 <a href="https://www.spotify.com/premium/" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -155,10 +163,7 @@ const Navbar = () => {
                                                 <div>Support</div>
                                                 <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                             </div>
-                                            <div className="drop-down flex">
-                                                <div>Download</div>
-                                                <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                            </div>
+                                            
                                         </div>
                                     </>
                                 )
@@ -175,61 +180,57 @@ const Navbar = () => {
 
 
                 {
-                    isAccountDetailsVisible && isAuthenticated && (
-                        <>
-                            <div className="drop-down-menu-nav-before-signup " id='drop-down-menu-nav-account'>
-                                <div className="drop-down flex">
-                                    <div>Account</div>
-                                    <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                </div>
-                                <div className="drop-down flex">
-                                    <div>Profile</div>
-
-                                </div>
-                                <div className="drop-down flex">
-                                    <div>Upgrade to Premium</div>
-                                    <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                </div>
-                                <div className="drop-down flex">
-                                    <div>Support</div>
-                                    <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                </div>
-                                <div className="drop-down flex">
-                                    <div>Download</div>
-                                    <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
-                                </div>
-                                <div className="drop-down flex">
-                                    <div>Settings</div>
-                                </div>
-                                <hr />
-                                <div className="drop-down flex" onClick={logoutFunction}>
-                                    <a href="#" ><p>Logout</p></a>
-                                </div>
-
-
-
-                            </div>
-                        </>
-                    )
-                }
-                {
                     isAuthenticated && (
                         <>
-                            {/* <button className='secondary-button explore-premium'>Explore Premium</button> */}
-                            {/* <button className='tertiary-button install-app'><i className="fa-regular fa-circle-down" style={{ color: "#ffffff" }}></i> Install App</button> */}
                             {
                                 displayProfile ? (
                                     <Tooltip title={userName} placement="top">
-                                        < img src={`${profile}`} alt="Profile" onClick={handelClickAccount} className="google-profile-image"/> 
+                                        < img src={`${profile}`} alt="Profile" onClick={toggleDropdown} className="google-profile-image" />
                                     </Tooltip>
 
-                                ) : <i className="fa-solid fa-user" style={{ color: "#ffffff" }} onClick={handelClickAccount}></i>
-                                    }
+                                ) : <>
+
+
+                                    <i className="fa-solid fa-user" id='account-logo' style={{ color: "#ffffff" }} onClick={toggleDropdown}></i>
+                                     <div className="drop-down-menu-nav-before-signup display-none" id='drop-down-menu-nav-account' ref={dropdownRef}>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Account</div>
+                                            <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                                        </div>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Profile</div>
+
+                                        </div>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Upgrade to Premium</div>
+                                            <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                                        </div>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Support</div>
+                                            <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                                        </div>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Download</div>
+                                            <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                                        </div>
+                                        <div className="drop-down flex" id='for-clicking-outside'>
+                                            <div id='for-clicking-outside'>Settings</div>
+                                        </div>
+                                        <hr />
+                                        <div className="drop-down flex" onClick={logoutFunction} id='for-clicking-outside'>
+                                            <a href="#" ><p id='for-clicking-outside'>Logout</p></a>
+                                        </div>
+                                    </div>
+                                    
+                                </>
+                            }
 
 
                         </>
+
                     )
                 }
+
 
 
 

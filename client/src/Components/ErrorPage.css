@@ -82,6 +82,13 @@ body{
     .Home-button{
         width: 100px !important;
     }
+    .text{
+        font-size: 0.7em;
+    }
+    .anchor,.loading{
+        text-align: center;
+        font-size: 0.6em;
+    }
 
 }
 

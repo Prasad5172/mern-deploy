@@ -14,7 +14,7 @@ const Playlist = (props) => {
         token = localStorage.getItem('profile')
     }
     console.log(token)
-    const { handleClick, handlePause, isPlaying, referencePlaylistInd, soundRef } = useContext(SigninContext)
+    const { handleClick, handlePause, isPlaying, referencePlaylistInd, soundRef, isAuthenticated } = useContext(SigninContext)
     const dispatch = useDispatch()
     const { id } = useParams()
     return (
@@ -49,6 +49,7 @@ const Playlist = (props) => {
                                     <div className="play-playlist-logo-section flex">
                                         <div className="play-symbol-in-playlist" onClick={
                                             () => {
+
                                                 if (ind1 == referencePlaylistInd && isPlaying) {
                                                     handlePause()
                                                 } else {
@@ -59,8 +60,12 @@ const Playlist = (props) => {
                                         </div>
                                         <i className="love   fa-regular fa-heart" onClick={
                                             () => {
-
-                                                dispatch(addToLibrary({ ...ele1, "token": token }))
+                                                if (isAuthenticated) {
+                                                    dispatch(addToLibrary({ ...ele1, "token": token }))
+                                                }else{
+                                                    window.location.href = '#login';
+            // setLoginSongImg(Playlistapi[referenceInd].url)
+                                                }
                                             }
                                         }></i>
                                         {/* <i className="dots  fa-solid fa-ellipsis"></i> */}

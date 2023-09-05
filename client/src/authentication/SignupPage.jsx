@@ -193,11 +193,13 @@ const SignupPage = () => {
       closeIcon = document.querySelector(".close1"),
       progress = document.querySelector(".progress1");
     let timer1, timer2;
+    toast1.classList.remove("display-none");
     toast1.classList.add("active");
     progress.classList.add("active");
     // console.log(toast1)
 
     setTimeout(() => {
+      toast1.classList.add("display-none");
       toast1.classList.remove("active");
     }, 5000);   //1s = 1000 milliseconds
 
@@ -310,7 +312,7 @@ const SignupPage = () => {
     <>
       <div className="outer-box " id="signup-page">
       
-        <div className="toast1 toast" style={{ background: `${(isRegistationSuccesful == "succesful" || isRegistationSuccesful == "otpsend") ? "green" : "red"}` }}>
+        <div className="toast1 toast display-none" style={{ background: `${(isRegistationSuccesful == "succesful" || isRegistationSuccesful == "otpsend") ? "green" : "red"}` }}>
           <div className="toast-content">
             <i className={`fa-solid ${(isRegistationSuccesful == "succesful" || isRegistationSuccesful == "otpsend") ? "fa-check" : "fa-xmark"} check`} style={{ background: `${isRegistationSuccesful == "succesful" || isRegistationSuccesful == "otpsend" ? "green" : "red"}`, color: "white" }}></i>
             <div className="message">
