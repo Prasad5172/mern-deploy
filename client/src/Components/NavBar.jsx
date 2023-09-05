@@ -178,21 +178,7 @@ const Navbar = () => {
                     )
                 }
 
-
-                {
-                    isAuthenticated && (
-                        <>
-                            {
-                                displayProfile ? (
-                                    <Tooltip title={userName} placement="top">
-                                        < img src={`${profile}`} alt="Profile" onClick={toggleDropdown} className="google-profile-image" />
-                                    </Tooltip>
-
-                                ) : <>
-
-
-                                    <i className="fa-solid fa-user" id='account-logo' style={{ color: "#ffffff" }} onClick={toggleDropdown}></i>
-                                     <div className="drop-down-menu-nav-before-signup display-none" id='drop-down-menu-nav-account' ref={dropdownRef}>
+                <div className="drop-down-menu-nav-before-signup display-none" id='drop-down-menu-nav-account' ref={dropdownRef}>
                                         <div className="drop-down flex" id='for-clicking-outside'>
                                             <div id='for-clicking-outside'>Account</div>
                                             <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
@@ -221,6 +207,20 @@ const Navbar = () => {
                                             <a href="#" ><p id='for-clicking-outside'>Logout</p></a>
                                         </div>
                                     </div>
+                {
+                    isAuthenticated && (
+                        <>
+                            {
+                                displayProfile ? (
+                                    <Tooltip title={userName} placement="top">
+                                        < img src={`${profile}`} alt="Profile" onClick={toggleDropdown} className="google-profile-image" id='account-logo' />
+                                    </Tooltip>
+
+                                ) : <>
+
+
+                                    <i className="fa-solid fa-user" id='account-logo' style={{ color: "#ffffff" }} onClick={toggleDropdown}></i>
+                                     
                                     
                                 </>
                             }

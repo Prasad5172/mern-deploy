@@ -65,7 +65,7 @@ const Home = () => {
     // current songPlaylist index
     const [referencePlaylistInd, setReferencePlaylistInd] = useState(-1)
     // song-details in footter section of the home 
-    const [imgUrl, setImgUrl] = useState("#")
+    const [imgUrl, setImgUrl] = useState("")
     const [songName, setSongName] = useState("")
     const [songDescription, setSongDescription] = useState("")
     const [loginSongImg, setLoginSongImg] = useState("");
