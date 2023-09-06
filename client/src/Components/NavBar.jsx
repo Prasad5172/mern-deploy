@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState,useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleChevronLeft, faCircleChevronRight, faMinus, faMagnifyingGlass, faChevronRight } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +13,7 @@ const Navbar = () => {
     // const BackendUrl = "http://localhost:8000"
     const BackendUrl = ""
     // using context
-    const { userName, setUserName, displayProfile, setDisplayProfile, profile, setIsLoginSuccesful, soundRef, setAudioPos, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, setSongPlayingInd, isSearchVisible, setSerchVisible, isAuthenticated, setAuthenticated } = useContext(SigninContext);
+    const { userName, setUserName, displayProfile, setDisplayProfile, profile, setIsLoginSuccesful, soundRef, setAudioPos, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, setSongPlayingInd, isSearchVisible, setSerchVisible, isAuthenticated, setAuthenticated,handleMobileViewBars } = useContext(SigninContext);
     const [num, setNum] = useState(-1)
     const [button, setButton] = useState(true);
     const [click, setClick] = useState(false);
@@ -113,12 +113,12 @@ const Navbar = () => {
         dropdown.classList.toggle("display-none")
     }
 
-    
-    window.onclick = function(e){
+
+    window.onclick = function (e) {
         console.log(e.target)
-        if(e.target.id !== 'drop-down-menu-nav-account' &&  e.target.id !=='account-logo' && e.target.id !='for-clicking-outside'){
+        if (e.target.id !== 'drop-down-menu-nav-account' && e.target.id !== 'account-logo' && e.target.id != 'for-clicking-outside') {
             const dropdown = document.getElementById('drop-down-menu-nav-account')
-            if(dropdown && !dropdown.classList.contains('display-none')) {
+            if (dropdown && !dropdown.classList.contains('display-none')) {
                 dropdown.classList.toggle('display-none');
             }
         }
@@ -128,11 +128,30 @@ const Navbar = () => {
     return (
         <>
             <div className={`nav-bar  flex ${isAuthenticated ? "background-transparent" : ""}`} id='nav-bar' >
+                <div className="mobile-left-bar">
+                    <i className="fa-solid fa-bars mobile-left-bar-bars" onClick={handleMobileViewBars}></i>
+                    {/* <div className="home-and-search" >
+                    <NavLink to="/">
+                        <div className="home padding-class " id='home-button'>
+                            <FontAwesomeIcon className="fontawesome-home" icon={faHouseChimney} style={{ color: "#fffff", }} />
+                        </div>
+                    </NavLink>
+
+
+                    <NavLink to="/search">
+                        <div className="search padding-class" id='search-button'>
+                            <FontAwesomeIcon className='search-icon ' icon={faMagnifyingGlass} style={{ color: "#888787", }} />
+                            {isSearchActive && <FontAwesomeIcon className='circle-in-search' icon={faCircle} style={{ color: "#ffffff", }} />}
+
+                        </div>
+                    </NavLink>
+                </div> */}
+                </div>
                 <div className="arrow-main-container flex">
                     <div className="arrow-container">
                         <FontAwesomeIcon className="left-icon-in-nav icon-in-nav" id='left-icon' icon={faChevronRight} onClick={handelClick} />
                     </div>
-                    
+
                 </div>
                 <div className="input-flex-grow">
                     {
@@ -150,7 +169,7 @@ const Navbar = () => {
                     !isAuthenticated && (
                         <>
 
-                           
+
                             {
                                 !button && !click && (
                                     <>
@@ -163,7 +182,7 @@ const Navbar = () => {
                                                 <div>Support</div>
                                                 <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square"></i></a>
                                             </div>
-                                            
+
                                         </div>
                                     </>
                                 )
@@ -179,34 +198,34 @@ const Navbar = () => {
                 }
 
                 <div className="drop-down-menu-nav-before-signup display-none" id='drop-down-menu-nav-account' ref={dropdownRef}>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Account</div>
-                                            <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
-                                        </div>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Profile</div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Account</div>
+                        <a href="#" target='_blank' ><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                    </div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Profile</div>
 
-                                        </div>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Upgrade to Premium</div>
-                                            <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
-                                        </div>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Support</div>
-                                            <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
-                                        </div>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Download</div>
-                                            <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
-                                        </div>
-                                        <div className="drop-down flex" id='for-clicking-outside'>
-                                            <div id='for-clicking-outside'>Settings</div>
-                                        </div>
-                                        <hr />
-                                        <div className="drop-down flex" onClick={logoutFunction} id='for-clicking-outside'>
-                                            <a href="#" ><p id='for-clicking-outside'>Logout</p></a>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Upgrade to Premium</div>
+                        <a href="https://www.spotify.com/premium/?ref=web_loggedin_upgrade_menu" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                    </div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Support</div>
+                        <a href="https://support.spotify.com/" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                    </div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Download</div>
+                        <a href="https://spotify.com/download" target='_blank'><i className="fa-solid fa-arrow-up-right-from-square" id='for-clicking-outside'></i></a>
+                    </div>
+                    <div className="drop-down flex" id='for-clicking-outside'>
+                        <div id='for-clicking-outside'>Settings</div>
+                    </div>
+                    <hr />
+                    <div className="drop-down flex" onClick={logoutFunction} id='for-clicking-outside'>
+                        <a href="#" ><p id='for-clicking-outside'>Logout</p></a>
+                    </div>
+                </div>
                 {
                     isAuthenticated && (
                         <>
@@ -220,8 +239,8 @@ const Navbar = () => {
 
 
                                     <i className="fa-solid fa-user" id='account-logo' style={{ color: "#ffffff" }} onClick={toggleDropdown}></i>
-                                     
-                                    
+
+
                                 </>
                             }
 

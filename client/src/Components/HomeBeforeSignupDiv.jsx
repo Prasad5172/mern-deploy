@@ -25,7 +25,6 @@ const HomeBeforeSignupDiv = (props) => {
                     })}
                 </div>
             </div>
-
         </>
     )
 }

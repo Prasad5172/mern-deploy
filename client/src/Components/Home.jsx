@@ -367,14 +367,46 @@ const Home = () => {
         return <p>{truncatedText}</p>;
       }
 
+      const [isMobileLeftBarVisible, setIsMobileLeftBarVisible] = useState(false);
+    const leftbarRef = useRef()
+      const handleMobileViewBars = (e) => {
+        setIsMobileLeftBarVisible(true)
+        leftbarRef.current.classList.toggle('left-0px')
+    }
+
+    const handleClickOutside = (event) => {
+        console.log(event.target)
+        console.log(leftbarRef?.current?.contains(event.target))
+        if(event.target.id !== 'left-bar' && event.target.id != 'playlist-body' && event.target.id != 'for-collapse-in-mobile'){
+            console.log(event.target)
+            setIsMobileLeftBarVisible(false)
+            leftbarRef.current.classList.toggle('left-0px')
+        }
+    };
+          
+        useEffect(() => {
+            if (isMobileLeftBarVisible) {
+              document.addEventListener('mousedown', handleClickOutside);
+            } else {
+              document.removeEventListener('mousedown', handleClickOutside);
+            }
+            return () => {
+              document.removeEventListener('mousedown', handleClickOutside);
+            };
+          }, [isMobileLeftBarVisible]);
+
+
+
+
+
     return (
         <>
-            <SigninContext.Provider value={{ userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, soundRef, setAudioPos, isPlaying, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, songPlayingInd, setSongPlayingInd, referencePlaylistInd, soundRef, isPasswordResetSuccesful, setSerchVisible, handleClick, isSearchVisible, handlePause, setIsPasswordResetSuccesful }} >
+            <SigninContext.Provider value={{ userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, soundRef, setAudioPos, isPlaying, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, songPlayingInd, setSongPlayingInd, referencePlaylistInd, soundRef, isPasswordResetSuccesful, setSerchVisible, handleClick, isSearchVisible, handlePause, setIsPasswordResetSuccesful,handleMobileViewBars }} >
 
 
                 <div className="main-container">
                     <div className="left-and-right-body-section">
-                        <HomeLeftBar list={list} songPlaylingPlaylistId={songPlaylingPlaylistId}/>
+                        <HomeLeftBar list={list} songPlaylingPlaylistId={songPlaylingPlaylistId} leftbarRef={leftbarRef} handleMobileViewBars={handleMobileViewBars}/>
                         <Outlet />
                     </div>
                     {

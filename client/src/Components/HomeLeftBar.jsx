@@ -9,11 +9,11 @@ import Logo from "../logo.png"
 
 const HomeLeftBar = (props) => {
     const { list } = props;
+    const {leftbarRef,handleMobileViewBars} = props;
     const { setSerchVisible, isAuthenticated } = useContext(SigninContext);
     const location = useLocation();
     const [isSearchActive, setSearchActive] = useState(false);
-    const [isMobileLeftBarVisible, setIsMobileLeftBarVisible] = useState(false);
-    const leftbarRef = useRef()
+    
 
     useEffect(() => {
         const currentUrl = location.pathname;
@@ -40,38 +40,14 @@ const HomeLeftBar = (props) => {
         // eslint-disable-next-line
     }, [location])
 
-    const handleMobileViewBars = (e) => {
-        setIsMobileLeftBarVisible(true)
-        leftbarRef.current.classList.toggle('left-0px')
-    }
-
-    const handleClickOutside = (event) => {
-        console.log(event.target)
-        console.log(leftbarRef?.current?.contains(event.target))
-        if(event.target.id !== 'left-bar' && event.target.id != 'playlist-body' && event.target.id != 'for-collapse-in-mobile'){
-            console.log(event.target)
-            setIsMobileLeftBarVisible(false)
-            leftbarRef.current.classList.toggle('left-0px')
-        }
-    };
-          
-        useEffect(() => {
-            if (isMobileLeftBarVisible) {
-              document.addEventListener('mousedown', handleClickOutside);
-            } else {
-              document.removeEventListener('mousedown', handleClickOutside);
-            }
-            return () => {
-              document.removeEventListener('mousedown', handleClickOutside);
-            };
-          }, [isMobileLeftBarVisible]);
+   
 
 
    
 
     return (
         <>
-            <div className="mobile-left-bar">
+            {/* <div className="mobile-left-bar">
                 <i className="fa-solid fa-bars mobile-left-bar-bars" onClick={handleMobileViewBars}></i>
                 <div className="home-and-search" >
                     <NavLink to="/">
@@ -89,7 +65,7 @@ const HomeLeftBar = (props) => {
                         </div>
                     </NavLink>
                 </div>
-            </div>
+            </div> */}
             <div className="left-bar" ref={leftbarRef} id='left-bar'>
                 <div className="home-and-search" >
                     <div className="mobile-left-bar-visible display-none">
