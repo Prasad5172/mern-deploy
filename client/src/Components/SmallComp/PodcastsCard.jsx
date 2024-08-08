@@ -10,7 +10,7 @@ const PodcastsCard = () => {
                     <>
                         <div className="box-on-search" onClick={() => navigate(`/geners/${ind}`)}>
                             <h2>{ele.type}</h2>
-                            <img src={`${ele.url}`} alt="" />
+                            <img src={`${ele.image_url}`} alt="" />
                         </div>
                     </>
                 )

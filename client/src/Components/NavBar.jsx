@@ -10,8 +10,8 @@ import { all } from 'axios';
 
 
 const Navbar = () => {
-    // const BackendUrl = "http://localhost:8000"
-    const BackendUrl = ""
+    const BackendUrl = "http://localhost:8000"
+    // const BackendUrl = ""
     // using context
     const { userName, setUserName, displayProfile, setDisplayProfile, profile, setIsLoginSuccesful, soundRef, setAudioPos, setIsPlaying, setPauseButton, setImgUrl, setSongName, setSongDescription, setSongPlayingInd, isSearchVisible, setSerchVisible, isAuthenticated, setAuthenticated,handleMobileViewBars } = useContext(SigninContext);
     const [num, setNum] = useState(-1)
@@ -114,8 +114,8 @@ const Navbar = () => {
     }
 
 
-    window.onclick = function (e) {
-        console.log(e.target)
+    click = function (e) {
+        // console.log(e.target)
         if (e.target.id !== 'drop-down-menu-nav-account' && e.target.id !== 'account-logo' && e.target.id != 'for-clicking-outside') {
             const dropdown = document.getElementById('drop-down-menu-nav-account')
             if (dropdown && !dropdown.classList.contains('display-none')) {
@@ -130,22 +130,6 @@ const Navbar = () => {
             <div className={`nav-bar  flex ${isAuthenticated ? "background-transparent" : ""}`} id='nav-bar' >
                 <div className="mobile-left-bar">
                     <i className="fa-solid fa-bars mobile-left-bar-bars" onClick={handleMobileViewBars}></i>
-                    {/* <div className="home-and-search" >
-                    <NavLink to="/">
-                        <div className="home padding-class " id='home-button'>
-                            <FontAwesomeIcon className="fontawesome-home" icon={faHouseChimney} style={{ color: "#fffff", }} />
-                        </div>
-                    </NavLink>
-
-
-                    <NavLink to="/search">
-                        <div className="search padding-class" id='search-button'>
-                            <FontAwesomeIcon className='search-icon ' icon={faMagnifyingGlass} style={{ color: "#888787", }} />
-                            {isSearchActive && <FontAwesomeIcon className='circle-in-search' icon={faCircle} style={{ color: "#ffffff", }} />}
-
-                        </div>
-                    </NavLink>
-                </div> */}
                 </div>
                 <div className="arrow-main-container flex">
                     <div className="arrow-container">

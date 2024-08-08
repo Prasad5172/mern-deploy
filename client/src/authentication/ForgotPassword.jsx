@@ -4,8 +4,8 @@ import { SigninContext } from '../context/SigninContext'
 import blackLogo from "../black-logo.jpg"
 import "./SigninAndSignup.css"
 function ForgotPassword(props) {
-    const BackendUrl = ""
-    // const BackendUrl = "http://localhost:8000"
+    // const BackendUrl = ""
+    const BackendUrl = "http://localhost:8000"
     const navigate = useNavigate()
     const location = useLocation()
     const { userName, setUserName, displayProfile, setDisplayProfile, profile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful } = useContext(SigninContext)
@@ -25,6 +25,7 @@ function ForgotPassword(props) {
         five: '',
         six: '',
     });
+
     const InputEvent = (event) => {
         // console.log(formdata)
         const { name, value } = event.target;
@@ -48,7 +49,7 @@ function ForgotPassword(props) {
                 },
                 body: JSON.stringify(formdata),
             });
-            // console.log(checkuser)
+            console.log(checkuser)
             if (checkuser.ok) {
                 try {
                     const res = await fetch(`${BackendUrl}/sendEmail`, {
@@ -80,6 +81,8 @@ function ForgotPassword(props) {
             console.log(error)
         }
     };
+
+
     const signupBtnFailedAnimation = () => {
         const failed = document.getElementById("sign-up-btn");
         setTimeout(() => {
@@ -103,7 +106,6 @@ function ForgotPassword(props) {
                 ...prevOtpData,
                 [name]: value,
             }));
-
             // Move focus to the next input field
             if (inputIndex < inputRefs.current.length - 1) {
                 inputRefs.current[inputIndex + 1].focus();
@@ -259,7 +261,7 @@ function ForgotPassword(props) {
             btn.classList.remove("btn-click")
         }, 300);
         event.preventDefault()
-        // console.log("i am in handle reset password function")
+        console.log("i am in handle reset password function")
         try {
             const res = await fetch(`${BackendUrl}/resetpassword`, {
                 method: "POST",
@@ -280,11 +282,10 @@ function ForgotPassword(props) {
                 props.setIsPasswordResetSuccesful("resetpassword")
                 setTimeout(() => {
                     props.setIsPasswordResetSuccesful("")
-
                 }, 5000);
             }
         } catch (error) {
-
+            console.log(error)
         }
     }
     const [showPassword1, setShowPassword1] = useState(false);
@@ -370,15 +371,13 @@ function ForgotPassword(props) {
                                         setformData({
                                             firstname: "",
                                             email: "",
-                                            password: "",
-                                            confirmpassword: ""
                                         })
                                     } else {
                                         navigate(-1)
                                     }
                                 }}></i>
-                            <img src={`${blackLogo}`} alt="Logo" className="black-logo" />
-                            <h1 className="spotify-name-in-loginpage">Spotify</h1>
+                            <img src={`${blackLogo}`} alt="Logo" className="black-logo" onClick={() => navigate("/")} />
+                            <h1 className="spotify-name-in-loginpage" onClick={() => navigate("/") }>Spotify</h1>
                         </div>
                         <div className="inner-box">
                             {

@@ -5,18 +5,24 @@ import "../home.css"
 import SongInfo from './SongInfo'
 import Playlistapi from "../apis/playlistApi.json"
 import { SigninContext } from '../../context/SigninContext'
-import { useDispatch } from 'react-redux'
-import { addToLibrary } from '../../redux/cartReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToDb, fetchLibraryData } from '../../redux/library/Actions'
 const Playlist = (props) => {
     var token = localStorage.getItem('token');
-    console.log(token)
+    // console.log(token)
     if (!token) {
         token = localStorage.getItem('profile')
     }
-    console.log(token)
+    // console.log(token)
     const { handleClick, handlePause, isPlaying, referencePlaylistInd, soundRef, isAuthenticated } = useContext(SigninContext)
     const dispatch = useDispatch()
+    const list = useSelector(state => state.library.list)
     const { id } = useParams()
+
+    useEffect(() => {
+        dispatch(fetchLibraryData())
+    },[dispatch])
+    
     return (
         <>
             {
@@ -24,10 +30,10 @@ const Playlist = (props) => {
                     if (id === ele1.playlistId) {
                         return (
                             <>
-                                <div className="playlist-main-right-div" key={ele1.playlistId}>
+                                <div className="playlist-main-right-div" key={ele1.playlistId} >
                                     <div className="playlist-main-container">
                                         <div className="playlist-header-section flex">
-                                            <img className="bts" src={`${ele1.url}`} alt="BTS" />
+                                            <img className="bts" src={`${ele1.image_url}`} alt="BTS" />
                                             <div className="playlist-header-section-content">
                                                 <div className="playlist-header-section-main-header">
                                                     <p>Playlist</p>
@@ -61,10 +67,15 @@ const Playlist = (props) => {
                                         <i className="love   fa-regular fa-heart" onClick={
                                             () => {
                                                 if (isAuthenticated) {
-                                                    dispatch(addToLibrary({ ...ele1, "token": token }))
-                                                }else{
+                                                    // console.log(list)
+                                                    const playlist = list.filter((item) => item.playlistId == ele1.playlistId)
+                                                    // console.log(playlist)
+                                                    if (playlist.length == 0 ) {
+                                                        dispatch(addToDb(ele1.title, ele1.image_url, ele1.playlistId, token))
+                                                    }
+                                                } else {
                                                     window.location.href = '#login';
-            // setLoginSongImg(Playlistapi[referenceInd].url)
+                                                    // setLoginSongImg(Playlistapi[referenceInd].url)
                                                 }
                                             }
                                         }></i>

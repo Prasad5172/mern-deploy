@@ -20,8 +20,8 @@ import axios from 'axios'
 const App = () => {
   // AsyncStorage.removeItem('persist:root'); 
   const navigate = useNavigate()
-  // const BackendUrl = "http://localhost:8000"
-  const BackendUrl = ""
+  const BackendUrl = "http://localhost:8000"
+  // const BackendUrl = ""
   const { handleClick, handlePause } = useContext(SigninContext)
   const [isAuthenticated, setAuthenticated] = React.useState(false);
   const [userName, setUserName] = React.useState("")
@@ -36,13 +36,12 @@ const App = () => {
   useEffect(() => {
     const credential = localStorage.getItem("profile");
      setToken(credential);
-  
     if (credential) {
       var payload = credential ? decodeJwt(credential) : undefined;
   
       if (payload) {
         axios
-          .get(`${BackendUrl}protected`, {  
+          .get(`${BackendUrl}/protected`, {  
             headers: {
               Authorization: `Bearer ${credential}`,
             },

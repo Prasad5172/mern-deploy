@@ -8,7 +8,7 @@ const Card = (props) => {
             <div className="card">
                 <NavLink to={`/playlist/${props.playlistId}`}>
                     <div className="image-container-card">
-                        <div className="play-img-div" style={{ background: `url(${props.url}) no-repeat center / cover` }}>
+                        <div className="play-img-div" style={{ background: `url(${props.image_url}) no-repeat center / cover` }}>
 
                         </div>
                         <div className="para">

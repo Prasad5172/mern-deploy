@@ -7,7 +7,7 @@ import { Howl } from 'howler'
 import { SigninContext } from "../context/SigninContext"
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchLibraryData } from '../redux/cartReducer'
+import { fetchLibraryData } from '../redux/library/Actions'
 
 const Home = () => {
     // getting  playlists from the redux store
@@ -16,7 +16,10 @@ const Home = () => {
 
     useEffect(() => {
         // Dispatch the action to fetch library data when the component mounts
-        dispatch(fetchLibraryData());
+        console.log("dispatch use effect")
+        if(isAuthenticated){
+            dispatch(fetchLibraryData());
+        }
     }, [dispatch]);
 
 
@@ -88,7 +91,7 @@ const Home = () => {
                 setSongPlayingInd(ind);
                 latestSongPlayingInd.current = ind;
                 const audio = ele.audio;
-                setImgUrl(ele.url)
+                setImgUrl(ele.image_url)
                 setSongName(ele.title)
                 setSongDescription(ele.singer)
                 if (soundRef.current == null) {
@@ -125,10 +128,10 @@ const Home = () => {
             }
         } else if (isSong) {
             window.location.href = '#login';
-            setLoginSongImg(Playlistapi[referenceInd].songs[ind].url)
+            setLoginSongImg(Playlistapi[referenceInd].songs[ind].image_url)
         } else {
             window.location.href = '#login';
-            setLoginSongImg(Playlistapi[referenceInd].url)
+            setLoginSongImg(Playlistapi[referenceInd].image_url)
         }
     }
 
@@ -186,7 +189,7 @@ const Home = () => {
             setIsPlaying(true); // Toggle the play/pause state
             setSongPlayingInd(ind);
             latestSongPlayingInd.current = ind;
-            setImgUrl(ele.url)
+            setImgUrl(ele.image_url)
             setSongDescription(ele.singer)
             setSongName(ele.title)
 
@@ -215,7 +218,7 @@ const Home = () => {
                 setIsPlaying(true); // Toggle the play/pause state
                 setSongPlayingInd(ind);
                 latestSongPlayingInd.current = ind;
-                setImgUrl(ele.url)
+                setImgUrl(ele.image_url)
                 setSongDescription(ele.singer)
                 setSongName(ele.title)
 

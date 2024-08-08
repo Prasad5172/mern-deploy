@@ -10,7 +10,7 @@ const SongInfo = (props) => {
 
   return (
     <>
-      <div className="song-info" >
+      <div className="song-info" key={props.id} >
         {(songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? (
           isPlaying ? <>
           <div className="bars-container ">
@@ -42,13 +42,13 @@ const SongInfo = (props) => {
         ))
       }
         <div className="song-image-section">
-          <img className="song-logo" src={`${props.url}`} alt="img" />
+          <img className="song-logo" src={`${props.image_url}`} alt="img" />
           <div className="title-img">
             <p className={`song-lyrics ${songPlayingInd == props.id && props.referenceInd == referencePlaylistInd ? "green-color" : ""}`}>{props.title}</p>
             <div className="singers-div">
               <div className="e">E</div>
               <div className="singers-names">
-                {props.singer} , {props.lady}
+                {props.singer1} , {props.singer2}
               </div>
 
             </div>

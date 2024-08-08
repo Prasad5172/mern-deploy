@@ -17,8 +17,8 @@ var nodemailer = require("nodemailer")
 const Otp = require("./models/otpStruct")
 const otpGenerator = require("otp-generator")
 const path = require("path")
-// const BackendLocalHost_URL = "http://localhost:8000"
-const BackendLocalHost_URL = ""
+const BackendLocalHost_URL = "http://localhost:8000"
+// const BackendLocalHost_URL = ""
 const BackendHostingSite_URL = "https://ill-shawl-lamb.cyclic.cloud"
 
 
@@ -49,7 +49,7 @@ async function verify(req, res, next) {
     console.log(process.env.REACT_APP_CLIENT_ID)
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        next(createError.Unauthorized());
+        next(new Error("un authorized"));
         return;
     }
     const token = authHeader.split(" ")[1];
@@ -64,15 +64,66 @@ async function verify(req, res, next) {
             next();
             return;
         }
-        next(createError.Unauthorized());
-    } catch (error) {
-        next(createError.Unauthorized());
+        next(new Error("un authorized"));
+    }catch (error) {
+        next(new Error("un authorized"));
     }
 }
 
 app.get("/protected", verify, (req, res, next) => {
     console.log("protected")
     res.status(200).send("awesome it works for protected route");
+})
+
+app.post("/googleSignup", async (req, res) => {
+    console.log(req.body)
+    const user = await RegisterGoogleUser.findOne({ "email": req.body.email });
+    if (user != null) {
+        console.log("registredAlready")
+        return res.status(400).json("notValidMail")
+    }
+    try {
+        const email_verified = req.body.email_verified
+        if (email_verified) {
+            const newGoogleUser = new RegisterGoogleUser({
+                firstname: req.body.given_name,
+                email: req.body.email,
+                email_verified: email_verified,
+            })
+            const token = await newGoogleUser.generateAuthToken();
+            const user = await newGoogleUser.save();
+            console.log("succesful")
+            return res.status(200).json("succesful");
+        } else {
+            console.log("email is notverified");
+            return res.status(400).json("emailNotVerified")
+        }
+    } catch (error) {
+        console.log(error + "   signup");
+        res.status(400).json("error" + error)
+    }
+})
+app.post("/googleSignin", async (req, res) => {
+    try {
+        const email = req.body.email;
+        // console.log(email)
+        const user = await RegisterGoogleUser.findOne({ "email": req.body.email });
+        const email_verified = req.body.email_verified;
+        const token = await user.generateAuthToken();
+        const newgoogleuser = await user.save();
+        console.log(token)
+        if (user != null && email_verified) {
+            console.log("Login succesful")
+            return res.status(200).json({"data":"succesful","token":token})
+            
+        } else {
+            console.log("signup")
+            return res.status(400).json("signup");
+        }
+    } catch (error) {
+        console.log(error + "insignin");
+        res.status(400).json(error);
+    }
 })
 
 app.get((req, res, next) => {
@@ -86,7 +137,8 @@ app.use((err, req, res, next) => {
     })
 })
 
-app.post("/logout", auth, async (req, res) => {
+
+app.post("logout", auth, async (req, res) => {
     try {
         const token = req.body.token;
         // console.log(req.user);
@@ -134,6 +186,11 @@ app.post("/addtolibrary",async (req,res) => {
         var userLibrary = await Library.findOne({userId : user._id})
         const {title,url}  = req.body
         console.log(url,title)
+        const matchPlayList = userLibrary.playlists.filter((item) => item.playlistId == req.body.playlistId )
+        console.log(matchPlayList)
+        if(matchPlayList.length !=0 ){
+            return res.status(500).json("playlist already exists")
+        }
         if(!userLibrary){
             userLibrary = new Library({
                 userId:user._id,
@@ -166,8 +223,6 @@ app.post("/removefromlibrary",async (req,res) => {
         })
         await userLibrary.save()
         return res.status(200).json("removed")
-        // user.library = user.library.concat({"playlistId" : req.body.playlistId});
-
     } catch (error) {
         console.log(error);
         return res.status(500).json("error");
@@ -288,7 +343,6 @@ app.post("/verifyOtp", async (req, res) => {
             console.log("otp is wrong")
             return res.status(400).json("wrongOtp");
         }
-        return res.status(400).json("testing")
     } catch (error) {
         console.log(error)
         res.status(400).json(error)
@@ -376,56 +430,7 @@ app.post("/Signup", async (req, res) => {
     }
 })
 
-app.post("/googleSignup", async (req, res) => {
-    console.log(req.body)
-    const user = await RegisterGoogleUser.findOne({ "email": req.body.email });
-    if (user != null) {
-        console.log("registredAlready")
-        return res.status(400).json("notValidMail")
-    }
-    try {
-        const email_verified = req.body.email_verified
-        if (email_verified) {
-            const newGoogleUser = new RegisterGoogleUser({
-                firstname: req.body.given_name,
-                email: req.body.email,
-                email_verified: email_verified,
-            })
-            const token = await newGoogleUser.generateAuthToken();
-            const user = await newGoogleUser.save();
-            console.log("succesful")
-            return res.status(200).json("succesful");
-        } else {
-            console.log("email is notverified");
-            return res.status(400).json("emailNotVerified")
-        }
-    } catch (error) {
-        console.log(error + "   signup");
-        res.status(400).json("error" + error)
-    }
-})
-app.post("/googleSignin", async (req, res) => {
-    try {
-        const email = req.body.email;
-        // console.log(email)
-        const user = await RegisterGoogleUser.findOne({ "email": req.body.email });
-        const email_verified = req.body.email_verified;
-        const token = await user.generateAuthToken();
-        const newgoogleuser = await user.save();
-        console.log(token)
-        if (user != null && email_verified) {
-            console.log("Login succesful")
-            return res.status(200).json({"data":"succesful","token":token})
-            
-        } else {
-            console.log("signup")
-            return res.status(400).json("signup");
-        }
-    } catch (error) {
-        console.log(error + "insignin");
-        res.status(400).json(error);
-    }
-})
+
 
 
 app.listen(PORT, () => {

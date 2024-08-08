@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import {  useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { removeFromLibrary } from '../../redux/cartReducer'
+import { deleteFromDb } from '../../redux/library/Actions';
 
 function LibraryPlaylist(props) {
   const { songPlaylingPlaylistId } = props
@@ -25,28 +25,27 @@ function LibraryPlaylist(props) {
 
   return (
     <>
-      <div className="library-playlist" onClick={() => {
+      <div className="library-playlist" >
+        <img src={`${props.image_url}`} alt="image" className='library-image' onClick={() => {
+        navigate(`/playlist/${props.playlistId}`)
+      }}/>
+        <div className='library-playlist-details'onClick={() => {
         navigate(`/playlist/${props.playlistId}`)
       }}>
-        <img src={`${props.url}`} alt="image" className='library-image' />
-        <div className='library-playlist-details'>
         <TextWithEllipsis  text={`${props.title}`} maxLength={6} />
           <p>Playlist</p>
         </div>
         {
           songPlaylingPlaylistId === props.playlistId && <i className="fa-solid fa-volume-high" style={{ color: "#00ff11", marginRight: "10px" }}></i>
         }
-
-        <i className="fa-solid fa-trash" style={{ "color": "#a7a7a7" }} onClick={
+      <i className="fa-solid fa-trash" style={{ "color": "#a7a7a7" }} onClick={
           () => {
             var token = localStorage.getItem('token');
-            console.log(token)
             if (!token) {
               token = localStorage.getItem('profile')
             }
-            dispatch(removeFromLibrary({ ...props, "token": token }))
+            dispatch(deleteFromDb(props.playlistId,token))
           }
-
         } key={props.playlistId}></i>
       </div>
     </>

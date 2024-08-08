@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./SigninAndSignup.css"
 import blackLogo from "../black-logo.jpg"
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios"
 import "./Toast.css"
 const SignupPage = () => {
-  // const BackendUrl = "http://localhost:8000"
-  const BackendUrl = ""
+  const BackendUrl = "http://localhost:8000"
+  // const BackendUrl = ""
   const navigate = useNavigate();
   const [formdata, setformData] = useState({
     firstname: "",
@@ -78,7 +78,8 @@ const SignupPage = () => {
 
   const login = useGoogleLogin({
     onSuccess: async response => {
-      // console.log(response.access_token);
+      console.log(response);
+      console.log(response.access_token);
       try {
         const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
           headers: {
@@ -134,7 +135,6 @@ const SignupPage = () => {
   };
   const getCombinedOTP = () => {
     const { one, two, three, four, five, six } = otpData;
-
     return (one + two + three + four + five + six);
   };
 

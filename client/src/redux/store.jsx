@@ -1,11 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './cartReducer';
+import { applyMiddleware, combineReducers, legacy_createStore } from '@reduxjs/toolkit';
+import { libraryReducer } from './library/Reducer';
 import thunk from 'redux-thunk';
 
-export const store = configureStore({
-  reducer: { library: cartReducer },
-  middleware: (getDefaultMiddleware) => [
-    ...getDefaultMiddleware(),
-    thunk,
-  ],
-});
+const rootReducers = combineReducers({
+  library:libraryReducer
+})
+
+export const store = legacy_createStore(rootReducers,applyMiddleware(thunk))

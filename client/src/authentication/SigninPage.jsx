@@ -9,8 +9,8 @@ import blackLogo from "../black-logo.jpg"
 import "./Toast.css"
 
 const SinginPage = (props) => {
-  const BackendUrl = ""
-  // const BackendUrl = "http://localhost:8000"
+  // const BackendUrl = ""
+  const BackendUrl = "http://localhost:8000"
   const {  setUserName,  setDisplayProfile, setProfile, isAuthenticated, setAuthenticated, IsLoginSuccesful, setIsLoginSuccesful, isPasswordResetSuccesful } = useContext(SigninContext)
   useEffect(() => {
     if (isPasswordResetSuccesful == "resetpassword") {
@@ -46,6 +46,7 @@ const SinginPage = (props) => {
     window.localStorage.setItem("email", user.email)
   }
   const navigate = useNavigate()
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const btn = document.getElementById("sign-in-btn")
@@ -234,14 +235,14 @@ const SinginPage = (props) => {
                   <GoogleLogin
                     clientId="393706794831-fggnef4oudj1qqnu3ncbkce42epk3b0n.apps.googleusercontent.com"
                     onSuccess={async credentialResponse => {
-                      // console.log(credentialResponse)
+                      console.log(credentialResponse)
                       const { credential } = credentialResponse;
 
                       var payload = credential ? decodeJwt(credential) : undefined
                       // console.log(payload);
                       if (payload) {
                         console.log(payload);
-                        await axios.get("/protected", {
+                        await axios.get(`${BackendUrl}/protected`, {
                           headers: {
                             Authorization: `Bearer ${credential}`
                           }
